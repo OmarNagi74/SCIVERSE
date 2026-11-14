@@ -36,7 +36,7 @@ const statusIcon = {
   "not-comparable": Orbit,
 };
 
-export function TerraTwinGlyph({ compact = false }: { compact?: boolean }) {
+export function SciVerseGlyph({ compact = false }: { compact?: boolean }) {
   return (
     <span className={`tt-glyph ${compact ? "tt-glyph--compact" : ""}`} aria-hidden="true">
       <i />
@@ -113,9 +113,9 @@ export function AppHeader({ active }: { active?: PlanetId }) {
   const discoveryTo = reference ? `/discovery?referenceId=${encodeURIComponent(reference.id)}` : "/discovery";
   return (
     <header className="app-header">
-      <NavLink to="/" className="wordmark" aria-label="TerraTwin home">
-        <TerraTwinGlyph />
-        <span>TERRA<span>TWIN</span></span>
+      <NavLink to="/" className="wordmark" aria-label="SciVerse home">
+        <SciVerseGlyph />
+        <span>SCI<span>VERSE</span></span>
       </NavLink>
       <nav className="desktop-nav" aria-label="Primary navigation">
         {navItems.map((item) => (
@@ -180,7 +180,7 @@ export function ExplorerTelemetry({ body, activeLayerCount }: { body: PlanetId; 
       <span className="telemetry-rule" />
       <span>COORDINATES <b>{body === "earth" ? "WGS84" : "PLANETOCENTRIC · +E"}</b></span>
       <span className="telemetry-rule" />
-      <span>DATA MODE <b>DEMONSTRATION</b></span>
+      <span>DATA MODE <b>BACKEND DATASET</b></span>
       <span className="telemetry-rule" />
       <span><Layers3 size={13} /> {activeLayerCount} ACTIVE LAYERS</span>
       <ChevronDown className="telemetry-chevron" size={15} />

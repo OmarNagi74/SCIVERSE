@@ -1,0 +1,70 @@
+[
+  {
+    "path": "backend/ai_service/guardrails.py",
+    "existed": false
+  },
+  {
+    "path": "backend/ai_service/openrouter.py",
+    "existed": true
+  },
+  {
+    "path": "backend/ai_service/runtime.py",
+    "existed": true
+  },
+  {
+    "path": "backend/ai_service/vendor/terratwin_agent.py",
+    "existed": true
+  },
+  {
+    "path": "backend/terratwin/agent_api.py",
+    "existed": true
+  },
+  {
+    "path": "backend/tests/test_guardrails.py",
+    "existed": false
+  },
+  {
+    "path": "client/index.html",
+    "existed": true
+  },
+  {
+    "path": "client/src/app/CatalogGate.tsx",
+    "existed": true
+  },
+  {
+    "path": "client/src/components/terratwin/AppChrome.tsx",
+    "existed": true
+  },
+  {
+    "path": "client/src/components/terratwin/GuidedJourney.tsx",
+    "existed": true
+  },
+  {
+    "path": "client/src/components/terratwin/LandingStory.tsx",
+    "existed": true
+  },
+  {
+    "path": "client/src/components/terratwin/MissionAssistant.tsx",
+    "existed": true
+  },
+  {
+    "path": "client/src/components/terratwin/VisualSources.tsx",
+    "existed": true
+  },
+  {
+    "path": "client/src/components/terratwin/mission-assistant.css",
+    "existed": true
+  },
+  {
+    "path": "client/src/lib/sciverseApi.ts",
+    "existed": true
+  },
+  {
+    "path": "client/src/pages/Home.tsx",
+    "existed": true
+  },
+  {
+    "path": "client/src/pages/MissionPage.tsx",
+    "existed": true
+  }
+]

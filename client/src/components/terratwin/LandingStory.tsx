@@ -78,13 +78,13 @@ export default function LandingStory({ reduceMotion, onChooseTarget }: LandingSt
   return <>
     <section id="landing-method" className="tt-story-intro" aria-labelledby="tt-story-intro-title">
       <motion.div {...chapterReveal(reduceMotion)}>
-        <span className="tt-overline"><span className="tt-signal-dot" /> HOW TERRATWIN WORKS</span>
+        <span className="tt-overline"><span className="tt-signal-dot" /> HOW SCIVERSE WORKS</span>
         <h2 id="tt-story-intro-title">One question. <em>Three steps.</em><br />A whole new perspective.</h2>
-        <p>TerraTwin connects a planetary reference to possible Earth study environments. Here is the exact journey you'll take—nothing hidden behind a complicated dashboard.</p>
+        <p>SciVerse connects a planetary reference to possible Earth study environments. Here is the exact journey you'll take—nothing hidden behind a complicated dashboard.</p>
       </motion.div>
       <a className="tt-story-intro__jump" href="#tt-story-reference">EXPLORE THE JOURNEY <ArrowRight size={17} /></a>
     </section>
-    <section className="tt-story" aria-label="How to use TerraTwin">
+    <section className="tt-story" aria-label="How to use SciVerse">
       <nav className="tt-story__rail" aria-label="Story chapters">
         <span>MISSION ROUTE</span>
         {chapters.map((chapter, index) => <a key={chapter.id} href={`#${chapter.id}`} className={index === activeIndex ? "is-active" : ""} aria-current={index === activeIndex ? "step" : undefined}>
@@ -109,7 +109,7 @@ export default function LandingStory({ reduceMotion, onChooseTarget }: LandingSt
             <motion.p {...chapterReveal(reduceMotion, 0.1)}>Discover potential analog environments on Earth. Filter by terrain, geology, environment, and the needs of a real exploration mission.</motion.p>
             <motion.div {...chapterReveal(reduceMotion, 0.2)} className="tt-story-chapter__actions">
               <Link className="tt-story-chapter__primary" to={discoveryRoute}>OPEN EARTH DISCOVERY <ArrowUpRight size={17} /></Link>
-              <span>DEMONSTRATION CANDIDATES</span>
+              <span>DATASET CANDIDATES</span>
             </motion.div>
           </div>
           <motion.div {...chapterReveal(reduceMotion, 0.12)} className="tt-story-chapter__visual"><DiscoveryVisual /></motion.div>

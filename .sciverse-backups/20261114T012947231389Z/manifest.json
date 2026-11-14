@@ -1,0 +1,10 @@
+[
+  {
+    "path": "backend/ai_service/vendor/terratwin_agent.py",
+    "existed": true
+  },
+  {
+    "path": "backend/tests/test_guardrails.py",
+    "existed": true
+  }
+]

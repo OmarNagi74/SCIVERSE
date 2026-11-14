@@ -4,8 +4,7 @@ import cesium from "vite-plugin-cesium";
 import path from "node:path";
 import { defineConfig } from "vite";
 
-// TerraTwin standalone frontend. No Manus platform config, login API,
-// data provider or backend is required to explore the demonstration UI.
+// SciVerse frontend; research data is supplied by the FastAPI backend.
 export default defineConfig({
   plugins: [react(), tailwindcss(), cesium()],
   resolve: {
@@ -23,6 +22,7 @@ export default defineConfig({
   },
   server: {
     host: "0.0.0.0",
+    proxy: { "/api/v1": { target: process.env.BACKEND_URL || "http://127.0.0.1:8000", changeOrigin: true, timeout: 420000, proxyTimeout: 420000 } },
     fs: { strict: true, deny: ["**/.*"] },
   },
 });

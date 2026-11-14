@@ -3,7 +3,7 @@ import { useExplorer } from "@/app/ExplorerContext";
 import { AppHeader, ComparisonTray, ExplorerTelemetry, StatusBadge } from "@/components/terratwin/AppChrome";
 import PlanetFallback from "@/components/terratwin/PlanetFallback";
 import VisualSources from "@/components/terratwin/VisualSources";
-import { candidates, getFeaturesForBody, getLayersForBody, planetIntro } from "@/data/mockData";
+import { candidates, getFeaturesForBody, getLayersForBody, planetIntro } from "@/data/catalog";
 import type { AnalogCandidate, PlanetFeature, PlanetId } from "@/domain/terratwin";
 import { planetNames } from "@/domain/terratwin";
 import {
@@ -257,14 +257,14 @@ export default function ExplorerPage({ body }: ExplorerPageProps) {
             {body === "moon" && selected && <LunarCoverageNotice latitude={selected.coordinate.latitude} />}
             <div className="evidence-mini">
               <div><span className="eyebrow">AVAILABLE EVIDENCE</span><span className="evidence-mini__line" /></div>
-              <p>All active records use a transparent demonstration status. Connect reviewed source adapters before treating any layer as scientific evidence.</p>
+              <p>Records are loaded from the backend dataset. Inspect source coverage and uncertainty before using results as scientific evidence.</p>
               <button type="button" onClick={() => navigate("/mission#method")}>READ METHOD NOTES <ChevronRight size={14} /></button>
             </div>
             <VisualSources />
             <div className="next-action-card">
               <span className="eyebrow">NEXT ACTION</span>
               <strong>{reference ? "Choose / verify Earth candidate" : "Set a planetary reference"}</strong>
-              <p>{candidate ? "An illustrative Earth candidate is ready in the comparison tray." : "A complete comparison needs both a reference and an Earth candidate."}</p>
+              <p>{candidate ? "A dataset candidate is ready in the comparison tray." : "A complete comparison needs both a reference and an Earth candidate."}</p>
             </div>
           </div>
         </aside>
@@ -297,14 +297,14 @@ function SelectedDetails({ selected, body, onSetReference, onOpenDiscovery, onOp
       <p className="selected-details__kind">{candidateRecord ? selected.region : selected.kind}</p>
       <div className="coordinate-readout"><span>COORDINATES</span><strong>{itemLocation(selected)}</strong><small>{selected.coordinate.convention}</small></div>
       <p>{selected.description}</p>
-      <div className="context-callout"><span>CONTEXT</span><p>{candidateRecord ? selected.demoNotice : selected.context}</p></div>
+      <div className="context-callout"><span>CONTEXT</span><p>{candidateRecord ? selected.notice : selected.context}</p></div>
       <div className="source-strip"><span>SOURCE STATUS</span><strong>{selected.sourceLabel}</strong></div>
       {candidateRecord ? (
         <button type="button" className="mission-button mission-button--primary selected-action" onClick={() => onOpenLab(selected)}>OPEN COMPARISON LAB <ChevronRight size={15} /></button>
       ) : (
         <div className="selected-details__reference-actions"><button type="button" className="mission-button mission-button--primary selected-action" onClick={onSetReference}>SET AS REFERENCE <ChevronRight size={15} /></button><button type="button" className="mission-button mission-button--secondary selected-action" onClick={() => onOpenDiscovery(selected)}>DISCOVER EARTH ANALOGS <ChevronRight size={15} /></button></div>
       )}
-      {body === "earth" && <p className="panel-footnote">Selecting a site synchronizes this demonstration candidate with the comparison tray.</p>}
+      {body === "earth" && <p className="panel-footnote">Selecting a site synchronizes this dataset candidate with the comparison tray.</p>}
     </div>
   );
 }

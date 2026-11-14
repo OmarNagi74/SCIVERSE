@@ -99,7 +99,7 @@ export default function DestinationChooser({ open, onClose, onSelect, reduceMoti
           <span><Radar size={14} /> FIND EARTH SITES</span><ArrowRight size={13} aria-hidden="true" />
           <span><Layers3 size={14} /> COMPARE EVIDENCE</span>
         </div>
-        <p className="tt-target__disclaimer">TerraTwin currently presents demonstration candidate records, not validated scientific matches.</p>
+        <p className="tt-target__disclaimer">SciVerse presents backend research candidates, not validated scientific matches.</p>
       </motion.div>
     </div>, document.body,
   );

@@ -18,6 +18,20 @@ async function startServer() {
   app.get("/api/platform/config.js", (_req, res) => {
     res.set("Cache-Control", "no-store").type("application/javascript").send(publicPlatformScript());
   });
+  // Keep the browser on the same origin; provider credentials stay in FastAPI.
+  app.use("/api/v1", async (req, res) => {
+    try {
+      const upstream = await fetch(`${process.env.BACKEND_URL || "http://127.0.0.1:8000"}/api/v1${req.url}`, {
+        method: req.method,
+        headers: { "Content-Type": "application/json" },
+        body: ["GET", "HEAD"].includes(req.method) ? undefined : JSON.stringify(req.body),
+        signal: AbortSignal.timeout(420000),
+      });
+      res.status(upstream.status).type(upstream.headers.get("content-type") || "application/json").send(await upstream.text());
+    } catch {
+      res.status(502).json({ detail: "SciVerse backend is unavailable. Start the FastAPI server on port 8000." });
+    }
+  });
   registerOAuthRoutes(app);
   // tRPC API
   app.use(

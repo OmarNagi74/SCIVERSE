@@ -5,7 +5,7 @@ const sourceRecords = [
     body: "EARTH",
     title: "NASA GIBS / Blue Marble visual context",
     href: "https://svs.gsfc.nasa.gov/3615/",
-    description: "NASA GIBS serves optional Blue Marble Shaded Relief & Bathymetry imagery for orientation only. Credit the imagery to NASA/GSFC and NASA Earth Observatory. This is not an analytical layer or TerraTwin finding.",
+    description: "NASA GIBS serves optional Blue Marble Shaded Relief & Bathymetry imagery for orientation only. Credit the imagery to NASA/GSFC and NASA Earth Observatory. This is not an analytical layer or SciVerse finding.",
   },
   {
     body: "MOON",
@@ -17,7 +17,7 @@ const sourceRecords = [
     body: "MOON · REGIONAL TERRAIN",
     title: "NASA PDS / SLDEM2015 Tycho-area terrain source",
     href: "https://imbrium.mit.edu/EXTRAS/SLDEM2015/TILES/JP2/SLDEM2015_512_60S_30S_315_360_JP2.LBL",
-    description: "True elevation data from the LRO LOLA and SELENE/Kaguya terrain-camera merged product, 512 px/degree. For the JP2, TerraTwin decodes signed count = unsigned pixel − 32768; raw zero becomes the source no-data sentinel, −32768. Valid counts use 0.5 m/count relative to the 1,737.4 km radius. Only a small 40°–46°S, 15°–7°W Tycho visualization patch is rendered. This is not an active global dataset, elevation readout, site finding, or analysis result. Product authors: David E. Smith / LRO LOLA Team; cite Barker et al. (2016), Icarus 273, 346–355, doi:10.1016/j.icarus.2015.07.039; credit NASA LOLA and JAXA SELENE/Kaguya teams.",
+    description: "True elevation data from the LRO LOLA and SELENE/Kaguya terrain-camera merged product, 512 px/degree. For the JP2, SciVerse decodes signed count = unsigned pixel − 32768; raw zero becomes the source no-data sentinel, −32768. Valid counts use 0.5 m/count relative to the 1,737.4 km radius. Only a small 40°–46°S, 15°–7°W Tycho visualization patch is rendered. This is not an active global dataset, elevation readout, site finding, or analysis result. Product authors: David E. Smith / LRO LOLA Team; cite Barker et al. (2016), Icarus 273, 346–355, doi:10.1016/j.icarus.2015.07.039; credit NASA LOLA and JAXA SELENE/Kaguya teams.",
   },
   {
     body: "MARS",

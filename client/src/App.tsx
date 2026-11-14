@@ -57,16 +57,20 @@ function AppRoutes() {
   </>);
 }
 
+import CatalogGate from "@/app/CatalogGate";
+import MissionAssistant from "@/components/terratwin/MissionAssistant";
+
 function App() {
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
-          <ExplorerProvider>
+          <CatalogGate><ExplorerProvider>
             <BrowserRouter>
               <AppRoutes />
+              <MissionAssistant />
             </BrowserRouter>
-          </ExplorerProvider>
+          </ExplorerProvider></CatalogGate>
           <Toaster />
         </TooltipProvider>
       </ThemeProvider>

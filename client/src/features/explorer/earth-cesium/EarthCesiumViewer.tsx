@@ -1,5 +1,5 @@
 import PlanetFallback from "@/components/terratwin/PlanetFallback";
-import { candidates } from "@/data/mockData";
+import { candidates } from "@/data/catalog";
 import type { CameraAction } from "@/domain/terratwin";
 import { clampEarthCameraDistance } from "@/features/explorer/renderingPolicy";
 import "cesium/Build/Cesium/Widgets/widgets.css";
@@ -238,7 +238,7 @@ export default function EarthCesiumViewer({
               show: showCandidatesRef.current && visibleInCurrentView,
             },
             label: {
-              text: "DEMO SITE",
+              text: candidate.title,
               font: "11px IBM Plex Mono, monospace",
               fillColor: Cesium.Color.fromCssColorString("#eaf2f6"),
               outlineColor: Cesium.Color.fromCssColorString("#07101a"),

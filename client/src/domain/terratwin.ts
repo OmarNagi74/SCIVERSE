@@ -17,6 +17,7 @@ export type Coordinate = {
 export type ResearchDimensionId = "geology" | "terrain" | "temperature" | "water-ice" | "dust-wind" | "operations";
 
 export type DiscoveryEnvironment =
+  | "Unknown"
   | "Desert"
   | "Volcanic"
   | "Polar"
@@ -55,7 +56,7 @@ export type CandidateDiscoveryMetadata = {
   researchDimensions: ResearchDimensionId[];
   suggestedApplications: string[];
   limitations: string;
-  coordinateTreatment: "illustrative-map-position";
+  coordinateTreatment: "dataset-coordinate";
 };
 
 export type PlanetFeature = {
@@ -77,10 +78,10 @@ export type AnalogCandidate = {
   region: string;
   coordinate: Coordinate;
   description: string;
-  demoNotice: string;
+  notice: string;
   tags: string[];
   sourceLabel: string;
-  status: "demonstration";
+  status: DataStatus;
   discovery: CandidateDiscoveryMetadata;
 };
 

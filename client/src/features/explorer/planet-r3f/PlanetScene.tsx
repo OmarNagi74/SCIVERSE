@@ -1,5 +1,5 @@
 import PlanetFallback from "@/components/terratwin/PlanetFallback";
-import { getFeaturesForBody } from "@/data/mockData";
+import { getFeaturesForBody } from "@/data/catalog";
 import type { CameraAction, PlanetId } from "@/domain/terratwin";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
@@ -258,7 +258,7 @@ export default function PlanetScene(props: PlanetSceneProps) {
       <div className="planet-scene-controls" aria-label="Planet visualization settings">
         {props.body === "moon" && <div className="scene-mode-switch" role="group" aria-label="Lunar view mode">
           <button type="button" className={!regional ? "is-active" : ""} aria-pressed={!regional} onClick={() => setRegional(false)}><Orbit size={13} /> ORBITAL</button>
-          <button type="button" className={regional ? "is-active" : ""} aria-pressed={regional} disabled={props.selectedFeatureId !== "moon-tycho"} title={props.selectedFeatureId !== "moon-tycho" ? "Select Tycho crater context before viewing this bounded terrain patch." : "Open the source-bounded Tycho terrain proof."} onClick={() => { setRegional(true); setRotating(false); }}><Mountain size={13} /> TYCHO RELIEF</button>
+          <button type="button" className={regional ? "is-active" : ""} aria-pressed={regional} disabled={props.selectedFeatureId !== "moon_tycho"} title={props.selectedFeatureId !== "moon_tycho" ? "Select Tycho crater context before viewing this bounded terrain patch." : "Open the source-bounded Tycho terrain proof."} onClick={() => { setRegional(true); setRotating(false); }}><Mountain size={13} /> TYCHO RELIEF</button>
         </div>}
         {!regional && props.selectedFeatureId && <button type="button" className="scene-focus-control" onClick={replayTargetFocus} aria-label={`Fly camera to ${selectedTitle ?? "selected region"}`} title="Replay guided focus on the selected planetary region"><Focus size={13} /> FOCUS REGION</button>}
         {!regional && <button type="button" className="scene-motion-toggle" aria-pressed={rotating && !reducedMotion} disabled={reducedMotion} onClick={() => setRotating((value) => !value)}>{rotating && !reducedMotion ? <Pause size={12} /> : <Play size={12} />} {reducedMotion ? "REDUCED MOTION" : rotating ? "PAUSE ROTATION" : "ROTATE PLANET"}</button>}

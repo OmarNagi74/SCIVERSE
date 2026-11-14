@@ -1,4 +1,4 @@
-import { discoveryEnvironmentOptions, missionObjectiveOptions, researchDimensionOptions } from "@/data/mockData";
+import { discoveryEnvironmentOptions, missionObjectiveOptions, researchDimensionOptions } from "@/data/catalog";
 import type { DiscoveryEnvironment, MissionObjective, ReferencePlanet, ResearchDimensionId } from "@/domain/terratwin";
 import { ChevronDown, ChevronUp, FilterX, Search, SlidersHorizontal, X } from "lucide-react";
 import type { ReactNode } from "react";
@@ -42,8 +42,8 @@ export default function DiscoveryFilters({ targetPlanet, environments, objective
         <button type="button" className="discovery-filters__mobile-toggle" onClick={onToggleMobile} aria-expanded={mobileOpen}><SlidersHorizontal size={14} /> FILTERS <span>{resultCount.toString().padStart(2, "0")}</span>{mobileOpen ? <ChevronUp size={14} /> : <ChevronDown size={14} />}</button>
       </div>
       <div className="discovery-filters__content">
-        <label className="search-input discovery-search"><Search size={15} /><input value={search} onChange={(event) => onSearch(event.target.value)} placeholder="Search a demonstration site" aria-label="Search by site name" /></label>
-        <FilterGroup label="TARGET PLANET / DEMO WORKFLOW">
+        <label className="search-input discovery-search"><Search size={15} /><input value={search} onChange={(event) => onSearch(event.target.value)} placeholder="Search a dataset site" aria-label="Search by site name" /></label>
+        <FilterGroup label="TARGET PLANET">
           {(["moon", "mars"] as ReferencePlanet[]).map((planet) => <button type="button" className={`discovery-filter-button ${targetPlanet === planet ? "is-active" : ""}`} aria-pressed={targetPlanet === planet} onClick={() => onTargetPlanet(targetPlanet === planet ? null : planet)} key={planet}>{planet.toUpperCase()}</button>)}
         </FilterGroup>
         <FilterGroup label="ENVIRONMENT TYPE">
@@ -71,7 +71,7 @@ export default function DiscoveryFilters({ targetPlanet, environments, objective
             {environments.map((value) => <ActiveChip key={`env-${value}`} label={value} onRemove={() => onToggleEnvironment(value)} />)}
             {objectives.map((value) => <ActiveChip key={`obj-${value}`} label={value} onRemove={() => onToggleObjective(value)} />)}
             {dimensions.map((value) => <ActiveChip key={`dim-${value}`} label={researchDimensionOptions.find((dimension) => dimension.id === value)?.label ?? value} onRemove={() => onToggleDimension(value)} />)}
-            {!hasFilters && <span className="discovery-filter-empty">No filters applied; all three demonstration records are visible.</span>}
+            {!hasFilters && <span className="discovery-filter-empty">No filters applied.</span>}
           </div>
         </section>
       </div>

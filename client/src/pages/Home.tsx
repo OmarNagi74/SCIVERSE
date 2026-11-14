@@ -1,4 +1,4 @@
-import { AppHeader, TerraTwinGlyph } from "@/components/terratwin/AppChrome";
+import { AppHeader, SciVerseGlyph } from "@/components/terratwin/AppChrome";
 import DestinationChooser from "@/components/terratwin/DestinationChooser";
 import LandingStory from "@/components/terratwin/LandingStory";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Check, Compass, Orbit, ScanSearch, Sparkles } from "lucide-react";
@@ -179,7 +179,7 @@ export default function Home() {
         <div className="tt-hero__signal tt-hero__signal--earth" aria-hidden="true"><i /><span>EARTH / FIELD LAB</span></div>
         <div className="tt-hero__floating-ui" aria-hidden="true"><span className="tt-overline"><span className="tt-signal-dot" /> VISUAL LINK / PROTOTYPE</span><b>EARTH ↔ SPACE</b><small>CHOOSE · DISCOVER · COMPARE</small><div><i /><i /><i /><i /><i /><i /><i /><i /><i /></div></div>
         <motion.div className="landing-hero__content" inert={departing} aria-hidden={departing} animate={departing && !reduceMotion ? { opacity: 0, y: -8 } : { opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: cinematicEase }}>
-          <motion.div className="landing-hero__serial" {...reveal(0.1)}><TerraTwinGlyph compact /><span>EARTH × MOON × MARS / EXPLORATION</span><i aria-hidden="true" /></motion.div>
+          <motion.div className="landing-hero__serial" {...reveal(0.1)}><SciVerseGlyph compact /><span>EARTH × MOON × MARS / EXPLORATION</span><i aria-hidden="true" /></motion.div>
           <motion.p className="landing-hero__eyebrow" {...reveal(0.22)}><span className="tt-signal-dot" /> YOUR JOURNEY THROUGH THE SOLAR SYSTEM</motion.p>
           <h1 aria-label="Explore the Moon and Mars. Discover their connections to Earth.">
             <span className="landing-title-mask" aria-hidden="true"><motion.span {...reveal(0.34, true)}>THE NEXT WORLD</motion.span></span>
@@ -191,16 +191,16 @@ export default function Home() {
             <motion.div className="landing-action-reveal" {...reveal(1.25)}><button type="button" className="mission-button mission-button--primary landing-start tt-hero__main-cta" onClick={openMissionChooser} disabled={departing} aria-describedby="landing-handoff-note"><span>START EXPLORING</span><ArrowUpRight size={17} aria-hidden="true" /></button></motion.div>
             <motion.div className="landing-action-reveal" {...reveal(1.45)}><a className="mission-button mission-button--secondary" href="#landing-method">SEE HOW IT WORKS <ArrowDownRight size={16} aria-hidden="true" /></a></motion.div>
           </div>
-          <motion.div className="tt-hero__trust" {...reveal(1.65)}><span><Check size={13} /> NO ACCOUNT NEEDED</span><span><Sparkles size={13} /> INTERACTIVE 3D</span><span>DEMO DATA CLEARLY LABELED</span></motion.div>
+          <motion.div className="tt-hero__trust" {...reveal(1.65)}><span><Check size={13} /> NO ACCOUNT NEEDED</span><span><Sparkles size={13} /> INTERACTIVE 3D</span><span>BACKEND DATA · EVIDENCE LIMITS</span></motion.div>
         </motion.div>
-        <div className="tt-hero__route" aria-label="Three steps to explore TerraTwin">
+        <div className="tt-hero__route" aria-label="Three steps to explore SciVerse">
           {pathSteps.map(({ number, text, icon: Icon, anchor }, index) => <a href={anchor} key={number} className="tt-hero__route-step"><span className="tt-hero__route-no">{number}</span><Icon size={18} aria-hidden="true" /><span>{text}</span>{index < pathSteps.length - 1 && <ArrowRight size={14} className="tt-hero__route-arrow" aria-hidden="true" />}</a>)}
         </div>
-        <a className="landing-hero__scroll tt-hero__scroll" href="#landing-method" aria-label="Scroll to see how TerraTwin works"><span>SCROLL TO DISCOVER</span><i aria-hidden="true"><b /></i></a>
+        <a className="landing-hero__scroll tt-hero__scroll" href="#landing-method" aria-label="Scroll to see how SciVerse works"><span>SCROLL TO DISCOVER</span><i aria-hidden="true"><b /></i></a>
         <p className="sr-only" id="landing-handoff-note">Choose Moon or Mars, then select a reference region in the Explorer. A guided tour is also available in the header.</p>
       </section>
       <LandingStory reduceMotion={reduceMotion} onChooseTarget={openMissionChooser} />
-      <div className="tt-home-footer"><span>TERRATWIN / PLANETARY ANALOG DISCOVERY</span><span>RESEARCH PROTOTYPE · ILLUSTRATIVE WORKFLOW</span><Link to="/mission">EXPLORE THE MISSION <ArrowUpRight size={13} /></Link></div>
+      <div className="tt-home-footer"><span>SCIVERSE / PLANETARY ANALOG DISCOVERY</span><span>RESEARCH PROTOTYPE · ILLUSTRATIVE WORKFLOW</span><Link to="/mission">EXPLORE THE MISSION <ArrowUpRight size={13} /></Link></div>
       <DestinationChooser open={destinationOpen && !departing} onClose={() => setDestinationOpen(false)} onSelect={(destination) => void startExploration(destination)} reduceMotion={reduceMotion} />
       {departingTo && <motion.div className={`landing-departure tt-home-departure tt-home-departure--${departingTo}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: reduceMotion ? 0 : 0.33, ease: cinematicEase }} aria-hidden="true">
         <div className="tt-home-departure__orb" aria-hidden="true" />

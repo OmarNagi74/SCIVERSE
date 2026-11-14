@@ -1,4 +1,4 @@
-import { getCandidate, getFeature } from "@/data/mockData";
+import { getCandidate, getFeature } from "@/data/catalog";
 import type { CameraAction, DiscoveryFilterState, PlanetFeature, Selection } from "@/domain/terratwin";
 import { createContext, type Dispatch, type ReactNode, type SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
