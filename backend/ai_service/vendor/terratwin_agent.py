@@ -159,10 +159,91 @@ class Agent:
         no_polar = bool(re.search(r"not in antarctica|no antarctica|accessible|easy to reach|avoid (the )?pol", t))
         if no_polar and region == "antarctica":
             region = None
-        mnum = re.search(r"\b(?:top|best)\s+(\d+)|\b(\d+)\s+(?:sites|places|options|locations)", t)
+        mnum = re.search(r"\b(?:top|best)\s+(\d+)|\b(\d+)\s+(?:[a-z]+\s+){0,2}?(?:sites|places|options|locations|analogs?|candidates|picks)\b", t)
         n = int(next(g for g in mnum.groups() if g)) if mnum else 3
         return dict(body=body, target=target, purpose=purpose, region=region, exclude_polar=no_polar,
                     n=max(1, min(n, 10)), assumed_body=body is None)
+
+    # ---------------------------------------------------- request checks
+    _NOT_PLACES = {"mars", "moon", "earth", "the", "a", "an", "my", "our", "this", "that", "space", "nasa", "artemis",
+                   "january", "february", "march", "april", "may", "june", "july", "august", "september", "october",
+                   "november", "december", "summer", "winter", "spring", "autumn", "fall", "english", "arabic"}
+
+    def unsupported_region(self, question):
+        """A capitalised place after in/within/inside/near that we cannot filter on -> name it, never ignore it."""
+        known = set(REGIONS)
+        site_words = {w for e in self.d.earth if e.get("kind") != "grid" for w in re.split(r"[^a-z]+", (e.get("name") or "").lower()) if w}
+        target_words = {w for t in self.d.targets for w in re.split(r"[^a-z]+", t["name"].lower()) if w}
+        for m_ in re.finditer(r"\b(?:in|within|inside|near|across|around)\s+((?:the\s+)?[A-Z][A-Za-z\-]+(?:\s+[A-Z][A-Za-z\-]+){0,2})", question):
+            place = re.sub(r"^the\s+", "", m_.group(1), flags=re.I).strip()
+            low = place.lower()
+            if low in known or low in self._NOT_PLACES:
+                continue
+            words = set(low.split())
+            if words & (target_words | site_words) or words <= self._NOT_PLACES:
+                continue
+            return place
+        return None
+
+    def mentioned_site(self, question):
+        """A named Earth site (analog, candidate or control city) the user asks about."""
+        q = question.lower()
+        best = None
+        for e in self.d.earth:
+            if e.get("kind") == "grid" or not e.get("name"):
+                continue
+            name = e["name"].lower()
+            inner = [p for p in re.findall(r"\((.*?)\)", name)            # e.g. (Yungay), not (Apollo training)
+                     if not re.search(r"training|tests?|area|core|rats|amadee|mission", p)]
+            phrases = [name, re.sub(r"\s*\(.*?\)", "", name).strip()] + inner
+            for ph in phrases:
+                ph = ph.strip()
+                if len(ph) >= 4 and re.search(r"\b" + re.escape(ph) + r"\b", q):
+                    if best is None or len(ph) > best[1]:
+                        best = (e["id"], len(ph))
+        return best[0] if best else None
+
+    def evaluate_site(self, earth_id, req):
+        """Answer 'is X a good analog?' with the numbers for X itself."""
+        body = req["body"]
+        e = self.d.earth[self.d.eid[earth_id]]
+        tid = req["target"] or next((t["id"] for t in self.list_targets(body)
+                                     if "2024 list" in t["status"] or "lander site" in t["status"]),
+                                    self.list_targets(body)[0]["id"])
+        f = self.site_facts(earth_id, tid, req["purpose"])
+        ck = self.cross_check(earth_id, body)
+        au = self.audit_site(earth_id)
+        final = np.asarray(self.scores[body][3], dtype=float)
+        i = self.d.eid[earth_id]
+        rank = int(np.sum(final > final[i]) + 1)
+        total = int(np.sum(~np.isnan(final)))
+        self._log("evaluate", f"evaluate_site({earth_id}, {tid}, {req['purpose']})",
+                  dict(rank=rank, of=total, check=ck, flags=au["flags"]))
+        name = f["earth_site"]["name"]
+        tname = self.d.targets[self.d.tid[tid]]["name"]
+        th = sorted(f["theme_percentiles"].items(), key=lambda x: -x[1])
+        w = f["widest_gaps"][0] if f["widest_gaps"] else None
+        verdict = ("This is a control city: it is used as a negative test, not as a recommended analog."
+                   if e.get("label") == "control" else
+                   "It is a known analog site." if e.get("label") == "analog" else
+                   "It is a candidate proposed by this project." if e.get("label") == "candidate" else "")
+        lines = [f"Evaluation of {name} as a {body.title()} analog (reference: {tname}, purpose {req['purpose'].replace('_', ' ')}).",
+                 f"Overall: rank {rank} of {total} scored Earth locations (dataset percentile {ck['final_pct']}). {verdict}".strip(),
+                 f"Purpose-specific percentile against {tname}: {f['overall_percentile']}."]
+        if th:
+            lines.append(f"Strongest theme: {th[0][0]} ({th[0][1]}); weakest: {th[-1][0]} ({th[-1][1]}).")
+        lines.append(f"Second opinion: classifier {ck['classifier_pct']} vs similarity {ck['similarity_pct']}"
+                     f" ({'they agree' if ck['agree'] else 'they disagree, treat with care'}).")
+        if w:
+            lines.append(f"Biggest gap: {w['label']} ({w['earth']} {w['unit']} here vs {w['target']} {w['unit']} on the target).")
+        if au["flags"]:
+            lines.append("Check first: " + "; ".join(au["flags"]) + ".")
+        lines.append("Percentiles are relative rankings among Earth locations, not physical similarity percentages.")
+        pick = dict(earth_id=earth_id, name=name, lat=float(e["lat"]), lon=float(e["lon"]), target_id=tid,
+                    score_pct=f["overall_percentile"], rank=1, check=ck, audit=au, facts=f,
+                    confidence="low" if e.get("label") == "control" else "medium", evaluation=True)
+        return dict(request=dict(req, evaluate_site=earth_id), picks=[pick], answer="\n".join(lines),
+                    trace=self.trace, status="complete", mode="site_evaluation")
 
     def run(self, text):
         text = self.request_text(validate_question(text))
@@ -170,7 +251,17 @@ class Agent:
         req = self.understand(text)
         if req['body'] is None:
             return dict(answer='Please specify Moon or Mars, or name a planetary target, before searching for Earth analogs.', picks=[], trace=[], status='clarification_required')
+        question = re.split(r'\n(?:Reference|Earth site):', text, maxsplit=1)[0]
+        place = None if req["region"] else self.unsupported_region(question)
+        if place:
+            supported = ", ".join(sorted(REGIONS))
+            return dict(request=req, picks=[], trace=[], status="clarification_required",
+                        answer=f"Region '{place}' is not supported yet, so no picks were returned instead of ignoring it. "
+                               f"Supported regions: {supported}.")
         self._log("understand", "parse request", req)
+        site = self.mentioned_site(question)
+        if site:
+            return self.evaluate_site(site, req)
         if req["target"]:
             tids = [req["target"]]
         else:                                                # no target named: use the body's listed landing sites

@@ -106,7 +106,7 @@ def test_no_default_mars_and_health_version():
     from fastapi.testclient import TestClient
     from terratwin.main import app
     with TestClient(app) as client:
-        assert client.get('/api/v1/agent/health').json()['guardrailsVersion'] == '2026-11-14.2'
+        assert client.get('/api/v1/agent/health').json()['guardrailsVersion'] == '2026-11-14.3'
         for route in ['/api/v1/agent/chat', '/api/v1/agent/query']:
             assert client.post(route, json={'text': 'سسسس\nReference: Mars (mars).'}).status_code == 400
         result = client.post('/api/v1/agent/query', json={'text': 'Find Earth analog sites'}).json()

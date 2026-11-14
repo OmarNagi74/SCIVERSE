@@ -93,7 +93,7 @@ export default function MissionAssistant() {
     const context = includeContext ? [reference && `Reference: ${reference.title} (${reference.body}).`, candidate && `Earth site: ${candidate.title}.`].filter(Boolean).join(" ") : "";
     try {
       const server = await apiRequest<{ guardrailsVersion?: string }>("/agent/health", undefined, abort.signal);
-      if (server.guardrailsVersion !== "2026-11-14.2") throw new Error("السيرفر شغّال بنسخة قديمة أو الواجهة متصلة بباك مختلف. أعد تشغيل الباك والفرونت. / Backend update required; restart both services.");
+      if (server.guardrailsVersion !== "2026-11-14.3") throw new Error("السيرفر شغّال بنسخة قديمة أو الواجهة متصلة بباك مختلف. أعد تشغيل الباك والفرونت. / Backend update required; restart both services.");
       const result = await apiRequest<AgentReply>(`/agent/${mode}`, { text: `${question}\n${context.slice(0, 300)}`.trim() }, abort.signal);
       if (typeof result.answer !== "string") throw new Error("The backend response is missing its answer.");
       setTurns(current => current.map(turn => turn.id === id ? { ...turn, reply: result } : turn));
