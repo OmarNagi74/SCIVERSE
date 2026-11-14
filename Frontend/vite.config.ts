@@ -6,7 +6,10 @@ import { defineConfig } from "vite";
 
 // SciVerse frontend; research data is supplied by the FastAPI backend.
 export default defineConfig({
-  plugins: [react(), tailwindcss(), cesium()],
+  plugins: [react(), tailwindcss(), cesium({
+    cesiumBuildRootPath: path.resolve(import.meta.dirname, "node_modules/cesium/Build"),
+    cesiumBuildPath: path.resolve(import.meta.dirname, "node_modules/cesium/Build/Cesium"),
+  })],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "client", "src"),

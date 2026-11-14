@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
-cd "$(dirname "$0")/../backend"
+cd "$(dirname "$0")/../../backend"
 if [[ -f .env ]]; then set -a; source .env; set +a; fi
 python_bin="${SCIVERSE_PYTHON:-$PWD/.venv/bin/python}"
 if [[ ! -x "$python_bin" ]]; then
