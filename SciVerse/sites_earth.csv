@@ -1,0 +1,108 @@
+site_id,name,country,lat,lon,label,analog_for,notes,coords_verified
+atacama_yungay,Atacama Desert (Yungay),Chile,-24.08,-69.92,analog,mars,Hyper-arid core; classic Mars soil analog,no
+dry_valleys_taylor,McMurdo Dry Valleys (Taylor Valley),Antarctica,-77.62,162.90,analog,mars,Cold hyper-arid polar desert,no
+devon_haughton,Haughton Crater (Devon Island),Canada,75.38,-89.67,analog,mars;moon,Impact crater in polar desert; HMP station,within 11 km of Google Places
+hiseas_maunaloa,HI-SEAS (Mauna Loa),USA,19.60,-155.49,analog,mars;moon,Basaltic volcanic terrain; habitat simulations,no
+mdrs_utah,Mars Desert Research Station (Hanksville),USA,38.41,-110.79,analog,mars,Mars Society analog station,within 11 km of Google Places
+askja_iceland,Askja Highlands,Iceland,65.03,-16.75,analog,moon;mars,Basaltic highlands; Apollo training area,within 11 km of Google Places
+lanzarote_timanfaya,Timanfaya (Lanzarote),Spain,29.00,-13.75,analog,moon;mars,Lava fields and tubes; ESA PANGAEA,within 11 km of Google Places
+rio_tinto,Rio Tinto,Spain,37.72,-6.55,analog,mars,Acidic iron-rich system; mineralogy analog,within 11 km of Google Places
+dallol,Dallol (Danakil),Ethiopia,14.24,40.30,analog,mars,Hydrothermal hypersaline extreme,within 11 km of Google Places
+wadi_rum,Wadi Rum,Jordan,29.58,35.42,analog,mars,Red sandstone desert,no
+white_desert_eg,White Desert (Farafra),Egypt,27.38,28.17,candidate,mars,Candidate: wind-eroded chalk desert,within 11 km of Google Places
+gilf_kebir_eg,Gilf Kebir,Egypt,23.44,25.84,candidate,mars,Candidate: hyper-arid plateau with crater fields,no
+svalbard_bockfjorden,Bockfjorden (Svalbard),Norway,79.40,13.40,analog,mars,AMASE expeditions; volcanic + permafrost,no
+pilbara,Pilbara,Australia,-21.20,119.30,analog,mars,Ancient crust; biosignature studies,no
+mojave_cima,Mojave Desert (Cima),USA,35.20,-115.80,analog,mars,Volcanic field; rover testing region,no
+namib_gobabeb,Namib Desert (Gobabeb),Namibia,-23.56,15.04,analog,mars,Dune fields analog,within 11 km of Google Places
+qaidam_dalangtan,Qaidam Basin (Dalangtan),China,38.50,91.40,analog,mars,High cold hyper-arid evaporite basin,no
+death_valley,Death Valley,USA,36.25,-116.83,analog,mars,Evaporites and alluvial fans,no
+craters_moon_idaho,Craters of the Moon,USA,43.42,-113.52,analog,moon;mars,Basaltic lava field; NASA FINESSE,no
+meteor_crater,Meteor Crater,USA,35.03,-111.02,analog,moon,Impact crater; Apollo training,no
+kilauea,Kilauea,USA,19.41,-155.28,analog,moon;mars,Active basaltic volcanism,no
+concordia_domec,Concordia Station (Dome C),Antarctica,-75.10,123.33,analog,moon;mars,Extreme cold isolation; ESA analog,within 11 km of Google Places
+ladakh_tsokar,Tso Kar (Ladakh),India,33.30,78.00,analog,mars,High-altitude cold desert,no
+negev_ramon,Ramon Crater (Negev),Israel,30.60,34.80,analog,mars,D-MARS analog site,no
+ctrl_manaus,Manaus (Amazon),Brazil,-3.10,-60.00,control,none,Negative control: tropical rainforest,no
+ctrl_cairo,Cairo,Egypt,30.04,31.24,control,none,Negative control: city,no
+ctrl_london,London,UK,51.50,-0.12,control,none,Negative control: temperate humid,no
+ctrl_singapore,Singapore,Singapore,1.35,103.82,control,none,Negative control: equatorial humid,no
+salar_uyuni,Salar de Uyuni,Bolivia,-20.13,-67.49,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+chajnantor,Chajnantor Plateau,Chile,-23.02,-67.75,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+ojos_del_salado,Ojos del Salado,Chile,-27.11,-68.54,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+el_tatio,El Tatio geyser field,Chile,-22.33,-68.01,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+salar_atacama,Salar de Atacama,Chile,-23.5,-68.25,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+maria_elena,Maria Elena (Atacama hyper-arid core),Chile,-22.3,-69.7,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+pampas_la_joya,Pampas de La Joya,Peru,-16.7,-72.0,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+university_valley,University Valley,Antarctica,-77.86,160.7,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+wright_valley,Wright Valley (Lake Vanda),Antarctica,-77.53,161.57,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+lake_untersee,Lake Untersee,Antarctica,-71.34,13.45,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+deception_island,Deception Island,Antarctica,-62.97,-60.65,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+axel_heiberg,McGill Arctic Research Station (Axel Heiberg),Canada,79.42,-90.75,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+pavilion_lake,Pavilion Lake,Canada,50.87,-121.74,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+mistastin_crater,Mistastin Crater,Canada,55.88,-63.31,analog,moon,Added for training labels; pull data with scrape_all.py sites,no
+sudbury,Sudbury Basin,Canada,46.6,-81.2,analog,moon,Added for training labels; pull data with scrape_all.py sites,no
+kilbourne_hole,Kilbourne Hole,USA,31.97,-106.96,analog,moon;mars,Added for training labels; pull data with scrape_all.py sites,no
+cinder_lake,Cinder Lake crater field,USA,35.32,-111.52,analog,moon,Added for training labels; pull data with scrape_all.py sites,no
+amboy_crater,Amboy Crater,USA,34.54,-115.79,analog,mars;moon,Added for training labels; pull data with scrape_all.py sites,no
+white_sands,White Sands,USA,32.78,-106.17,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+bonneville,Bonneville Salt Flats,USA,40.78,-113.83,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+lunar_crater_nv,Lunar Crater volcanic field,USA,38.38,-116.07,analog,moon;mars,Added for training labels; pull data with scrape_all.py sites,no
+great_sand_dunes,Great Sand Dunes,USA,37.73,-105.51,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+yellowstone,Yellowstone hydrothermal area,USA,44.46,-110.83,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+mono_lake,Mono Lake,USA,38.01,-119.01,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+krafla_myvatn,Krafla / Myvatn,Iceland,65.72,-16.78,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+reykjanes,Reykjanes lava fields,Iceland,63.88,-22.27,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+teide_tenerife,Teide (Las Canadas),Spain,28.27,-16.64,analog,mars;moon,Added for training labels; pull data with scrape_all.py sites,no
+etna,Mount Etna,Italy,37.75,14.99,analog,moon;mars,Added for training labels; pull data with scrape_all.py sites,no
+ries_crater,Ries Crater,Germany,48.88,10.56,analog,moon,Added for training labels; pull data with scrape_all.py sites,no
+ibn_battuta_erfoud,Ibn Battuta Centre area (Erfoud),Morocco,31.43,-4.23,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+chott_el_jerid,Chott el Jerid,Tunisia,33.7,8.4,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+dhofar_amadee,Dhofar desert (AMADEE-18 area),Oman,18.3,54.5,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+makgadikgadi,Makgadikgadi Pans,Botswana,-20.7,25.5,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+arkaroola,Arkaroola,Australia,-30.31,139.34,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+henbury_craters,Henbury Craters,Australia,-24.57,133.15,analog,moon;mars,Added for training labels; pull data with scrape_all.py sites,no
+lake_tyrrell,Lake Tyrrell,Australia,-35.3,142.8,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+turpan,Turpan Depression,China,42.9,89.6,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+lenghu_mars_camp,Lenghu Mars Camp (Qinghai),China,38.75,93.33,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+jinchang_mars_base,Mars Base 1 (Jinchang),China,38.6,102.0,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+lonar_crater,Lonar Crater,India,19.98,76.51,analog,moon;mars,Added for training labels; pull data with scrape_all.py sites,no
+tolbachik,Tolbachik volcanic field (Kamchatka),Russia,55.83,160.33,analog,moon;mars,Added for training labels; pull data with scrape_all.py sites,no
+emi_koussi,Emi Koussi (Tibesti),Chad,19.8,18.5,analog,mars,Added for training labels; pull data with scrape_all.py sites,no
+ctrl_lagos,Lagos,,6.45,3.39,control,none,Negative control: populated humid or temperate place,no
+ctrl_jakarta,Jakarta,,-6.2,106.85,control,none,Negative control: populated humid or temperate place,no
+ctrl_kinshasa,Kinshasa,,-4.32,15.31,control,none,Negative control: populated humid or temperate place,no
+ctrl_mumbai,Mumbai,,19.08,72.88,control,none,Negative control: populated humid or temperate place,no
+ctrl_dhaka,Dhaka,,23.81,90.41,control,none,Negative control: populated humid or temperate place,no
+ctrl_sao_paulo,Sao Paulo,,-23.55,-46.63,control,none,Negative control: populated humid or temperate place,no
+ctrl_new_orleans,New Orleans,,29.95,-90.07,control,none,Negative control: populated humid or temperate place,no
+ctrl_miami,Miami,,25.76,-80.19,control,none,Negative control: populated humid or temperate place,no
+ctrl_tokyo,Tokyo,,35.68,139.69,control,none,Negative control: populated humid or temperate place,no
+ctrl_shanghai,Shanghai,,31.23,121.47,control,none,Negative control: populated humid or temperate place,no
+ctrl_paris,Paris,,48.86,2.35,control,none,Negative control: populated humid or temperate place,no
+ctrl_moscow,Moscow,,55.76,37.62,control,none,Negative control: populated humid or temperate place,no
+ctrl_kolkata,Kolkata,,22.57,88.36,control,none,Negative control: populated humid or temperate place,no
+ctrl_bangkok,Bangkok,,13.76,100.5,control,none,Negative control: populated humid or temperate place,no
+ctrl_dublin,Dublin,,53.35,-6.26,control,none,Negative control: populated humid or temperate place,no
+ctrl_auckland,Auckland,,-36.85,174.76,control,none,Negative control: populated humid or temperate place,no
+ctrl_seattle,Seattle,,47.61,-122.33,control,none,Negative control: populated humid or temperate place,no
+ctrl_hanoi,Hanoi,,21.03,105.85,control,none,Negative control: populated humid or temperate place,no
+ctrl_kuala_lumpur,Kuala Lumpur,,3.14,101.69,control,none,Negative control: populated humid or temperate place,no
+ctrl_bogota,Bogota,,4.71,-74.07,control,none,Negative control: populated humid or temperate place,no
+ctrl_nairobi,Nairobi,,-1.29,36.82,control,none,Negative control: populated humid or temperate place,no
+ctrl_buenos_aires,Buenos Aires,,-34.6,-58.38,control,none,Negative control: populated humid or temperate place,no
+black_point_lava,Black Point Lava Flow (Desert RATS),USA,35.67,-111.47,analog,moon,Added as a lunar training label,no
+moses_lake_dunes,Moses Lake dunes (lunar rover tests),USA,47.07,-119.3,analog,moon,Added as a lunar training label,no
+katmai_ten_thousand_smokes,Valley of Ten Thousand Smokes (Apollo training),USA,58.38,-155.38,analog,moon,Added as a lunar training label,no
+newberry_bend,Newberry / Bend lava fields (Apollo training),USA,43.72,-121.23,analog,moon,Added as a lunar training label,no
+medicine_lake_lava,Medicine Lake / Lava Beds (Apollo training),USA,41.6,-121.55,analog,moon,Added as a lunar training label,no
+sedan_crater,Sedan Crater (Apollo training),USA,37.18,-116.05,analog,moon,Added as a lunar training label,no
+orocopia_mountains,Orocopia Mountains (Apollo training),USA,33.58,-115.75,analog,moon,Added as a lunar training label,no
+big_bend,Big Bend (Apollo training),USA,29.25,-103.25,analog,moon,Added as a lunar training label,no
+grand_canyon,Grand Canyon (Apollo training),USA,36.1,-112.1,analog,moon,Added as a lunar training label,no
+sierra_madera,Sierra Madera impact structure (Apollo training),USA,30.6,-102.9,analog,moon,Added as a lunar training label,no
+laki_iceland,Laki lava field (Apollo training),Iceland,64.07,-18.23,analog,moon,Added as a lunar training label,no
+wolfe_creek_crater,Wolfe Creek Crater,Australia,-19.17,127.8,analog,moon,Added as a lunar training label,no
+tswaing_crater,Tswaing Crater,South Africa,-25.41,28.08,analog,moon,Added as a lunar training label,no
+pingualuit_crater,Pingualuit Crater,Canada,61.28,-73.66,analog,moon,Added as a lunar training label,no
+kamil_crater_eg,Kamil Crater,Egypt,22.02,26.09,candidate,moon,Candidate: fresh small impact crater; coordinates unverified,no

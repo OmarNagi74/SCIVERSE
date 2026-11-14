@@ -1,0 +1,66 @@
+{
+ "features": [
+  "t_mean_c",
+  "t_max_c",
+  "t_min_c",
+  "t_diurnal_range_c",
+  "t_seasonal_range_c",
+  "precip_mm_year",
+  "pressure_kpa",
+  "relief_m",
+  "slope_deg",
+  "albedo"
+ ],
+ "themes": {
+  "thermal": [
+   "t_mean_c",
+   "t_max_c",
+   "t_min_c",
+   "t_diurnal_range_c",
+   "t_seasonal_range_c"
+  ],
+  "dryness": [
+   "precip_mm_year"
+  ],
+  "pressure": [
+   "pressure_kpa"
+  ],
+  "terrain": [
+   "relief_m",
+   "slope_deg"
+  ],
+  "surface": [
+   "albedo"
+  ]
+ },
+ "log1p": [
+  "precip_mm_year",
+  "relief_m",
+  "slope_deg"
+ ],
+ "earth_mean": {
+  "t_mean_c": 7.0583,
+  "t_max_c": 31.9763,
+  "t_min_c": -20.5128,
+  "t_diurnal_range_c": 10.1354,
+  "t_seasonal_range_c": 21.3405,
+  "precip_mm_year": 5.9463,
+  "pressure_kpa": 91.602,
+  "relief_m": 3.6671,
+  "slope_deg": 0.6957,
+  "albedo": 0.2851
+ },
+ "earth_std": {
+  "t_mean_c": 20.1509,
+  "t_max_c": 16.9754,
+  "t_min_c": 27.3105,
+  "t_diurnal_range_c": 3.7527,
+  "t_seasonal_range_c": 12.112,
+  "precip_mm_year": 1.3061,
+  "pressure_kpa": 10.5379,
+  "relief_m": 1.448,
+  "slope_deg": 0.6821,
+  "albedo": 0.2007
+ },
+ "scaling": "z = (transform(x) - earth_mean) / earth_std"
+}
