@@ -185,7 +185,7 @@
 }
 
 /* ================================================================
-   TERRATWIN — CINEMATIC FRONTEND COMPLETION / UI UPGRADE
+   SCIVERSE — CINEMATIC FRONTEND COMPLETION / UI UPGRADE
    Clearly separates visual demonstrations from scientific evidence.
    ================================================================ */
 :root { --tt-stroke:rgba(111,157,180,.27); --tt-panel:#0d1b29; --tt-glow:rgba(70,199,217,.16); }
@@ -263,7 +263,7 @@ section[id],article[id]{scroll-margin-top:100px}
 .lab-share-fallback{display:flex;align-items:center;gap:.55rem;padding:.7rem 1.7rem;background:rgba(229,122,53,.1);margin-bottom:1rem;flex-wrap:wrap}.lab-share-fallback label{font:.69rem var(--mono);color:#eec291}.lab-share-fallback input{flex:1;min-width:180px;color:#d8e9ed;border:1px solid rgba(70,199,217,.3);padding:.45rem;background:#071522;font:.68rem var(--mono)}.lab-share-fallback button{padding:.5rem;background:rgba(70,199,217,.1);color:var(--cyan)}
 @media(max-width:780px){.lab-share-fallback{padding:.7rem 1rem}}
 
-/* TerraTwin / cinematic exploration pass — non-data visual transitions. */
+/* SciVerse / cinematic exploration pass — non-data visual transitions. */
 .planet-jump {
   position:fixed; inset:0; z-index:10020; pointer-events:all;
   display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -359,3 +359,20 @@ section[id],article[id]{scroll-margin-top:100px}
   .planet-jump,.planet-jump__orb,.planet-jump__track span { animation:none!important; }
   .scene-focus-control:hover,.feature-row:active,.discovery-presets__list button:active,.mission-button:active { transform:none!important; }
 }
+
+/* SciVerse / consistent fail-safe states for live presentations. */
+.sciverse-fallback { min-height:100dvh; position:relative; color:#f2f5f7; background:radial-gradient(ellipse at 79% 37%,rgba(53,134,161,.20),transparent 47%),radial-gradient(ellipse at 23% 82%,rgba(214,110,57,.07),transparent 45%),#070d16; overflow:hidden; }
+.sciverse-fallback::before { content:""; position:absolute; inset:65px 0 0; pointer-events:none; opacity:.22; background-image:linear-gradient(rgba(90,160,187,.16) 1px,transparent 1px),linear-gradient(90deg,rgba(90,160,187,.16) 1px,transparent 1px); background-size:92px 92px; mask-image:linear-gradient(to right,#000,transparent 83%); }
+.sciverse-fallback__body { position:relative; z-index:1; margin:0 auto; max-width:900px; padding:clamp(7rem,15vh,11rem) 2rem 5rem; }
+.sciverse-fallback__orb { display:grid; place-items:center; width:70px; height:70px; border:1px solid rgba(70,199,217,.44); border-radius:50%; box-shadow:0 0 45px rgba(70,199,217,.08); margin-bottom:2.5rem; }
+.sciverse-fallback__orb .tt-glyph {transform:scale(1.65)}
+.sciverse-fallback__eyebrow,.sciverse-fallback__status { display:flex; align-items:center; gap:.65rem; font:500 .67rem var(--mono); letter-spacing:.13em; color:#67d0df; }
+.sciverse-fallback h1 {font-size:clamp(2.8rem,6.3vw,5.7rem); line-height:1.06; letter-spacing:-.06em; font-weight:500; margin:1.1rem 0 1.6rem;}
+.sciverse-fallback h1 em {font:italic 400 1em Georgia,serif; color:#73d9e6;}
+.sciverse-fallback p {color:#aebdcb; font-size:1rem; line-height:1.8; max-width:660px;}
+.sciverse-fallback__actions {display:flex; flex-wrap:wrap; align-items:center; gap:1rem; margin:2.5rem 0 3.5rem;}
+.sciverse-fallback__text-link { display:inline-flex; gap:.55rem; align-items:center; font:500 .68rem var(--mono); color:#95c9d4; padding:.7rem; }
+.sciverse-fallback__text-link:hover {color:#f2f5f7;}
+.sciverse-fallback__status {color:#859aa7; font-size:.58rem;}
+.sciverse-app-error .sciverse-fallback__body {padding-top:17vh;}
+@media (max-width:560px) {.sciverse-fallback__body{padding:7rem 1.25rem 4rem}.sciverse-fallback h1{font-size:clamp(2.8rem,12vw,4rem)}}

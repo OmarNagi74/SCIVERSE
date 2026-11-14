@@ -1,62 +1,33 @@
-import { cn } from "@/lib/utils";
-import { AlertTriangle, RotateCcw } from "lucide-react";
-import { Component, ReactNode } from "react";
+import { AlertTriangle, ArrowLeft, RotateCcw } from "lucide-react";
+import { Component, type ErrorInfo, type ReactNode } from "react";
 
-interface Props {
-  children: ReactNode;
-}
+interface Props { children: ReactNode }
+interface State { hasError: boolean }
 
-interface State {
-  hasError: boolean;
-  error: Error | null;
-}
+/** Keep the full technical error in the developer console, not on the presentation screen. */
+export default class ErrorBoundary extends Component<Props, State> {
+  state: State = { hasError: false };
 
-class ErrorBoundary extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
+  static getDerivedStateFromError(): State { return { hasError: true }; }
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error("SciVerse workspace encountered an error", error, info.componentStack);
   }
 
   render() {
-    if (this.state.hasError) {
-      return (
-        <div className="flex items-center justify-center min-h-screen p-8 bg-background">
-          <div className="flex flex-col items-center w-full max-w-2xl p-8">
-            <AlertTriangle
-              size={48}
-              className="text-destructive mb-6 flex-shrink-0"
-            />
-
-            <h2 className="text-xl mb-4">An unexpected error occurred.</h2>
-
-            <div className="p-4 w-full rounded bg-muted overflow-auto mb-6">
-              <pre className="text-sm text-muted-foreground whitespace-break-spaces">
-                {this.state.error?.stack}
-              </pre>
-            </div>
-
-            <button
-              onClick={() => window.location.reload()}
-              className={cn(
-                "flex items-center gap-2 px-4 py-2 rounded-lg",
-                "bg-primary text-primary-foreground",
-                "hover:opacity-90 cursor-pointer"
-              )}
-            >
-              <RotateCcw size={16} />
-              Reload Page
-            </button>
+    if (!this.state.hasError) return this.props.children;
+    return (
+      <main className="sciverse-fallback sciverse-app-error" role="alert">
+        <div className="sciverse-fallback__body">
+          <span className="sciverse-fallback__eyebrow"><AlertTriangle size={15} /> SCIVERSE / VISUALIZATION INTERRUPTED</span>
+          <h1>Let's reconnect<br /><em>the exploration.</em></h1>
+          <p>This workspace couldn't be rendered. No scientific result or comparison has been generated. Please reload or return to the main experience.</p>
+          <div className="sciverse-fallback__actions">
+            <button type="button" className="mission-button mission-button--primary" onClick={() => window.location.reload()}><RotateCcw size={16} /> RELOAD WORKSPACE</button>
+            <a className="mission-button mission-button--secondary" href="/"><ArrowLeft size={16} /> RETURN HOME</a>
           </div>
         </div>
-      );
-    }
-
-    return this.props.children;
+      </main>
+    );
   }
 }
-
-export default ErrorBoundary;

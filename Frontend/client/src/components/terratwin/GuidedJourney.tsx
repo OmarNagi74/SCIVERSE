@@ -6,7 +6,7 @@ import { useExplorer } from "@/app/ExplorerContext";
 
 const journey = [
   { code: "01 / SELECT", title: "Choose your destination.", body: "Start with a named Moon or Mars reference. The globe is an exploration canvas, not a similarity calculation.", href: "/explorer/mars", cta: "OPEN PLANETARY EXPLORER", Icon: Globe2 },
-  { code: "02 / DISCOVER", title: "Search the Earth.", body: "Search backend candidates by mission purpose and region, then inspect evidence and build a comparison set.", href: "/discovery", cta: "OPEN EARTH DISCOVERY", Icon: Compass },
+  { code: "02 / DISCOVER", title: "Search the Earth.", body: "Browse illustrative terrestrial candidates, apply mission filters and build a comparison set. Demonstration positions are not verified analog findings.", href: "/discovery", cta: "OPEN EARTH DISCOVERY", Icon: Compass },
   { code: "03 / INVESTIGATE", title: "Inspect the evidence boundary.", body: "Read candidate dossiers, review missing datasets, and see which scientific questions still need a source.", href: "/discovery", cta: "BROWSE SITE DOSSIERS", Icon: Crosshair },
   { code: "04 / COMPARE", title: "Compare, without invented scores.", body: "Switch between candidates and scientific dimensions; see exactly what the prototype can and cannot claim.", href: "/compare", cta: "OPEN COMPARISON LAB", Icon: Layers3 },
 ];

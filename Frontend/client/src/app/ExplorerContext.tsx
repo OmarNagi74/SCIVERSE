@@ -46,12 +46,13 @@ function uniqueCandidateSelections(ids: string[]) {
 }
 
 // Only well-known catalog identifiers are rehydrated: never trust stale storage as evidence.
-const SESSION_KEY = "terratwin:exploration:v1";
+const SESSION_KEY = "sciverse:exploration:v1";
+const LEGACY_SESSION_KEY = "terratwin:exploration:v1"; // Migration only; never displayed.
 const emptyFilters: DiscoveryFilterState = { initialized: false, targetPlanet: null, environments: [], objectives: [], dimensions: [], search: "", sort: "name", view: "map" };
 type SavedExploration = { referenceId?: string; activeCandidateId?: string; candidateIds?: string[]; filters?: DiscoveryFilterState };
 function readSavedExploration(): SavedExploration {
   try {
-    const raw = localStorage.getItem(SESSION_KEY);
+    const raw = localStorage.getItem(SESSION_KEY) ?? localStorage.getItem(LEGACY_SESSION_KEY);
     const saved: unknown = raw ? JSON.parse(raw) : null;
     if (saved && typeof saved === "object" && !Array.isArray(saved)) return saved as SavedExploration;
   } catch { /* Private browsing and corrupted state fall back to defaults. */ }

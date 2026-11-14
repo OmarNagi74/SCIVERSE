@@ -17,6 +17,16 @@ const SiteProfilePage = lazy(() => import("@/pages/SiteProfilePage"));
 function RouteScrollManager() {
   const location = useLocation();
   useEffect(() => {
+    const routeTitle = location.pathname === "/" ? "Planetary Analog Exploration"
+      : location.pathname === "/mission" ? "Our Mission"
+      : location.pathname.startsWith("/explorer/") ? `${location.pathname.split("/")[2]?.toUpperCase() ?? "Planet"} Explorer`
+      : location.pathname === "/discovery" ? "Earth Analog Discovery"
+      : location.pathname.startsWith("/sites/") ? "Candidate Site Profile"
+      : location.pathname === "/compare" ? "Comparison Lab"
+      : "Not Found";
+    document.title = `${routeTitle} | SciVerse`;
+  }, [location.pathname]);
+  useEffect(() => {
     if (!location.hash) { window.scrollTo({ top: 0, behavior: "instant" }); return; }
     let id = location.hash.slice(1);
     try { id = decodeURIComponent(id); } catch { /* Keep literal ID. */ }

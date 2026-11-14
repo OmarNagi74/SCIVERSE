@@ -5,7 +5,7 @@ import { OrbitControls, Stars } from "@react-three/drei";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { useReducedMotion } from "framer-motion";
 import { Component, type ReactNode, lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Focus, Maximize2, Mountain, Orbit, Pause, Play, RotateCcw } from "lucide-react";
+import { Focus, Images, Maximize2, Mountain, Orbit, Pause, Play, RotateCcw } from "lucide-react";
 import * as THREE from "three";
 import { clampCameraDistance, type RenderProfile } from "../renderingPolicy";
 import { useScenePolicy } from "../useScenePolicy";
@@ -13,6 +13,7 @@ import type { TerrainStatus } from "./LunarTerrain";
 import { usePlanetTexture, type TextureStatus } from "./usePlanetTexture";
 
 const LunarTerrain = lazy(() => import("./LunarTerrain"));
+const PlanetaryTileViewer = lazy(() => import("./PlanetaryTileViewer"));
 
 type PlanetSceneProps = {
   body: Exclude<PlanetId, "earth">;
@@ -81,12 +82,12 @@ function CameraController({ action, regional, reducedMotion, selectedFeatureId, 
     // A conservative dolly keeps the whole globe in view; selection rotation is
     // responsible for putting the geographic feature at the front of the globe.
     const distance = selectedFeatureId ? Math.max(6.75, homePosition.length() * 0.84) : homePosition.length();
-    startFlight(camera.position.clone().normalize().multiplyScalar(clampCameraDistance(distance)), true);
+    startFlight(camera.position.clone().normalize().multiplyScalar(Math.max(5.55, clampCameraDistance(distance))), true);
   }, [selectedFeatureId, replayFocus, regional, homePosition, startFlight, camera]);
   useEffect(() => {
     if (action.nonce === lastActionNonce.current) return;
     lastActionNonce.current = action.nonce;
-    const nextDistance = action.kind === "home" ? homePosition.length() : clampCameraDistance(camera.position.length() * (action.kind === "zoom-in" ? 0.78 : 1.28), regional);
+    const nextDistance = action.kind === "home" ? homePosition.length() : Math.max(regional ? 3 : 5.55, clampCameraDistance(camera.position.length() * (action.kind === "zoom-in" ? 0.78 : 1.28), regional));
     startFlight(action.kind === "home" ? homePosition.clone() : camera.position.clone().normalize().multiplyScalar(nextDistance));
   }, [action, camera, homePosition, regional, startFlight]);
   // Cancel the animated dolly if the visitor drags, rotates or pinches the planet.
@@ -217,7 +218,7 @@ function SceneContents(props: PlanetSceneProps & { profile: RenderProfile; visib
       <directionalLight position={[-5, 1, -4]} intensity={0.45} color={props.body === "moon" ? "#809bae" : "#d67c51"} />
       {!props.regional && <Stars radius={32} depth={22} count={props.profile.stars} factor={2.1} saturation={0} fade speed={0} />}
       {props.regional ? <Suspense fallback={null}><LunarTerrain texture={texture} exaggeration={props.exaggeration} economy={props.profile.tier === "economy"} wireframe={props.wireframe} onStatus={props.onTerrainStatus} /></Suspense> : <OrbitalSurface {...props} texture={texture} />}
-      <OrbitControls enablePan={props.regional} enableDamping dampingFactor={0.09} minDistance={props.regional ? 3 : 3.5} maxDistance={props.regional ? 24 : 20} maxPolarAngle={props.regional ? Math.PI * 0.48 : Math.PI} onStart={props.onCameraGesture} />
+      <OrbitControls enablePan={props.regional} enableDamping dampingFactor={0.09} minDistance={props.regional ? 3 : 5.55} maxDistance={props.regional ? 24 : 20} maxPolarAngle={props.regional ? Math.PI * 0.48 : Math.PI} onStart={props.onCameraGesture} />
       <CameraController action={props.cameraAction} regional={props.regional} reducedMotion={props.reducedMotion} selectedFeatureId={props.selectedFeatureId} replayFocus={props.replayFocus} userGestureNonce={props.userGestureNonce} />
       <RenderLifecycle visible={props.visible} animate={props.rotating && !props.regional && !props.reducedMotion} fps={props.profile.fps} onContextLost={props.onContextLost} />
     </>
@@ -230,6 +231,7 @@ export default function PlanetScene(props: PlanetSceneProps) {
   const [textureStatus, setTextureStatus] = useState<TextureStatus>("loading");
   const [terrainStatus, setTerrainStatus] = useState<TerrainStatus>("loading");
   const [regional, setRegional] = useState(false);
+  const [tileDetail, setTileDetail] = useState(false);
   const [rotating, setRotating] = useState(!reducedMotion);
   const [exaggeration, setExaggeration] = useState(3);
   const [wireframe, setWireframe] = useState(false);
@@ -241,12 +243,13 @@ export default function PlanetScene(props: PlanetSceneProps) {
   const priorSelection = useRef(props.selectedFeatureId);
   const onContextLost = useCallback(() => setLost(true), []);
   const onCameraGesture = useCallback(() => setUserGestureNonce((count) => count + 1), []);
-  useEffect(() => { setRegional(false); setLost(false); setTextureStatus("loading"); }, [props.body]);
+  useEffect(() => { setRegional(false); setTileDetail(false); setLost(false); setTextureStatus("loading"); }, [props.body]);
   useEffect(() => {
-    if (priorSelection.current !== props.selectedFeatureId) { setRotating(false); setRegional(false); }
+    if (priorSelection.current !== props.selectedFeatureId) { setRotating(false); setRegional(false); setTileDetail(false); }
     priorSelection.current = props.selectedFeatureId;
   }, [props.selectedFeatureId]);
-  const selectedTitle = getFeaturesForBody(props.body).find((feature) => feature.id === props.selectedFeatureId)?.title;
+  const selectedFeature = getFeaturesForBody(props.body).find((feature) => feature.id === props.selectedFeatureId);
+  const selectedTitle = selectedFeature?.title;
   const replayTargetFocus = () => { setRotating(false); setReplayFocus((count) => count + 1); };
   return (
     <div ref={hostRef} className={`r3f-scene ${regional ? "r3f-scene--regional" : ""}`} aria-label={`${props.body === "moon" ? "Lunar" : "Martian"} interactive surface visualization`}>
@@ -255,15 +258,21 @@ export default function PlanetScene(props: PlanetSceneProps) {
           <SceneContents {...props} profile={profile} visible={visible} rotating={rotating} regional={regional} exaggeration={exaggeration} wireframe={wireframe} reducedMotion={reducedMotion} sunAngle={sunAngle} onTextureStatus={setTextureStatus} onTerrainStatus={setTerrainStatus} onContextLost={onContextLost} replayFocus={replayFocus} userGestureNonce={userGestureNonce} onCameraGesture={onCameraGesture} />
         </Canvas>
       </SceneErrorBoundary>}
-      <div className="planet-scene-controls" aria-label="Planet visualization settings">
+      {tileDetail && selectedFeature && <Suspense fallback={<div className="planet-texture-status" role="status">CONNECTING TO NASA REGIONAL IMAGERY…</div>}>
+        <PlanetaryTileViewer key={`${props.body}-${selectedFeature.id}`} body={props.body}
+          lat={selectedFeature.coordinate.latitude} lon={selectedFeature.coordinate.longitude}
+          title={selectedFeature.title} onClose={() => setTileDetail(false)} />
+      </Suspense>}
+      {!tileDetail && <div className="planet-scene-controls" aria-label="Planet visualization settings">
         {props.body === "moon" && <div className="scene-mode-switch" role="group" aria-label="Lunar view mode">
           <button type="button" className={!regional ? "is-active" : ""} aria-pressed={!regional} onClick={() => setRegional(false)}><Orbit size={13} /> ORBITAL</button>
           <button type="button" className={regional ? "is-active" : ""} aria-pressed={regional} disabled={props.selectedFeatureId !== "moon_tycho"} title={props.selectedFeatureId !== "moon_tycho" ? "Select Tycho crater context before viewing this bounded terrain patch." : "Open the source-bounded Tycho terrain proof."} onClick={() => { setRegional(true); setRotating(false); }}><Mountain size={13} /> TYCHO RELIEF</button>
         </div>}
+        {!regional && selectedFeature && <button type="button" className="scene-focus-control" onClick={() => { setTileDetail(true); setRotating(false); }} aria-label={`Open higher-detail NASA image tiles for ${selectedTitle ?? "selected region"}`} title="Load source-resolution regional NASA imagery (online)"><Images size={13} /> NASA SURFACE DETAIL</button>}
         {!regional && props.selectedFeatureId && <button type="button" className="scene-focus-control" onClick={replayTargetFocus} aria-label={`Fly camera to ${selectedTitle ?? "selected region"}`} title="Replay guided focus on the selected planetary region"><Focus size={13} /> FOCUS REGION</button>}
         {!regional && <button type="button" className="scene-motion-toggle" aria-pressed={rotating && !reducedMotion} disabled={reducedMotion} onClick={() => setRotating((value) => !value)}>{rotating && !reducedMotion ? <Pause size={12} /> : <Play size={12} />} {reducedMotion ? "REDUCED MOTION" : rotating ? "PAUSE ROTATION" : "ROTATE PLANET"}</button>}
-      </div>
-      {regional && <div className="terrain-instrument" aria-label="Bounded lunar terrain controls">
+      </div>}
+      {regional && !tileDetail && <div className="terrain-instrument" aria-label="Bounded lunar terrain controls">
         <div><span className="eyebrow">TYCHO / REGIONAL RELIEF PROOF</span><strong>LOLA + SELENE · SLDEM2015</strong></div>
         <p>40°–46°S · 15°–7°W · sampled static DEM · no terrain outside this patch</p>
         <div className="terrain-instrument__controls">
@@ -273,8 +282,8 @@ export default function PlanetScene(props: PlanetSceneProps) {
         </div>
         <small>Source heights drive geometry. Coarse GLD100 color is aligned by geographic UVs, not image-matched. Display light is illustrative; no measurement or site assessment is provided.</small>
       </div>}
-      {((textureStatus === "loading" || textureStatus === "unavailable") || (regional && terrainStatus !== "ready")) && <div className={`planet-texture-status ${textureStatus === "unavailable" || terrainStatus === "unavailable" ? "is-unavailable" : ""}`} role="status" aria-live="polite">{regional && terrainStatus === "unavailable" ? "TERRAIN ASSET UNAVAILABLE — RELIEF WITHHELD" : regional && terrainStatus === "loading" ? "LOADING LOCAL SOURCE-DERIVED TERRAIN" : textureStatus === "unavailable" ? "COLOR TEXTURE UNAVAILABLE — COLOR DETAIL WITHHELD" : "LOADING LOCAL VISUAL TEXTURE"}</div>}
-      <div className="render-quality-readout">{profile.tier.toUpperCase()} · {regional ? "REGIONAL DEM" : textureStatus === "preview" ? "PREVIEW → DETAIL" : `${profile.textureSize}px VISUAL`} · {visible ? "DEMAND RENDER" : "PAUSED"}</div>
+      {!tileDetail && ((textureStatus === "loading" || textureStatus === "unavailable") || (regional && terrainStatus !== "ready")) && <div className={`planet-texture-status ${textureStatus === "unavailable" || terrainStatus === "unavailable" ? "is-unavailable" : ""}`} role="status" aria-live="polite">{regional && terrainStatus === "unavailable" ? "TERRAIN ASSET UNAVAILABLE — RELIEF WITHHELD" : regional && terrainStatus === "loading" ? "LOADING LOCAL SOURCE-DERIVED TERRAIN" : textureStatus === "unavailable" ? "COLOR TEXTURE UNAVAILABLE — COLOR DETAIL WITHHELD" : "LOADING LOCAL VISUAL TEXTURE"}</div>}
+      <div className="render-quality-readout">{tileDetail ? "NASA TREK / SOURCE IMAGE DETAIL" : `${profile.tier.toUpperCase()} · ${regional ? "REGIONAL DEM" : textureStatus === "preview" ? "PREVIEW → DETAIL" : `${profile.textureSize}px GLOBAL PREVIEW`} · ${visible ? "DEMAND RENDER" : "PAUSED"}`}</div>
       <span className="sr-only" aria-live="polite">{selectedTitle ? `Selected ${selectedTitle}. ` : ""}{regional ? `Bounded Tycho terrain. ${exaggeration} times vertical display exaggeration.` : "Orbital visual context."}</span>
     </div>
   );

@@ -3,11 +3,12 @@ import DestinationChooser from "@/components/terratwin/DestinationChooser";
 import LandingStory from "@/components/terratwin/LandingStory";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Check, Compass, Orbit, ScanSearch, Sparkles } from "lucide-react";
 import { motion, useAnimationControls, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { lazy, Suspense, useEffect, useRef, useState, type PointerEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./home-story.css";
 
-const heroArtwork = "/assets/terratwin-hero.webp";
+const heroArtwork = "/assets/sciverse-hero.webp";
+const EarthSimulation = lazy(() => import("@/components/terratwin/EarthSimulation"));
 const cinematicEase = [0.22, 0.68, 0.16, 1] as const;
 type Destination = "moon" | "mars";
 
@@ -159,7 +160,7 @@ export default function Home() {
   }
 
   return (
-    <main className={`landing-page landing-page--cinematic tt-home${departing ? " is-departing" : ""}`} data-ambient={motionActive ? "running" : "paused"} data-reduced-motion={reduceMotion ? "true" : "false"}>
+    <main className={`landing-page landing-page--cinematic tt-home tt-home--earth-live${departing ? " is-departing" : ""}`} data-ambient={motionActive ? "running" : "paused"} data-reduced-motion={reduceMotion ? "true" : "false"}>
       <motion.div className="tt-home__reading-line" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
       <motion.div className="landing-navigation" inert={departing} aria-hidden={departing} {...reveal(1.5)}><AppHeader /></motion.div>
       <section ref={heroRef} className="landing-hero tt-hero" onPointerMove={movePointer} onPointerLeave={resetPointer}>
@@ -172,12 +173,28 @@ export default function Home() {
           <div className="landing-stage__light" /><div className="landing-stage__vignette" />
         </motion.div>
         <div className="landing-hero__noise" aria-hidden="true" />
+        <div className="tt-earth-simulation-stage" aria-hidden="true">
+          <Suspense fallback={<div className="tt-live-earth__fallback" />}>
+            <EarthSimulation active={motionActive} reducedMotion={reduceMotion} />
+          </Suspense>
+          <div className="tt-earth-simulation-stage__star tt-earth-simulation-stage__star--one" />
+          <div className="tt-earth-simulation-stage__star tt-earth-simulation-stage__star--two" />
+          <div className="tt-earth-simulation-stage__orbital-path tt-earth-simulation-stage__orbital-path--one"><i /></div>
+          <div className="tt-earth-simulation-stage__orbital-path tt-earth-simulation-stage__orbital-path--two"><i /></div>
+          <div className="tt-earth-simulation-stage__stream tt-earth-simulation-stage__stream--one"><i /><i /><i /><i /></div>
+          <div className="tt-earth-simulation-stage__stream tt-earth-simulation-stage__stream--two"><i /><i /><i /><i /></div>
+          <div className="tt-earth-simulation-stage__beacon tt-earth-simulation-stage__beacon--one"><i /></div>
+          <div className="tt-earth-simulation-stage__beacon tt-earth-simulation-stage__beacon--two"><i /></div>
+          <div className="tt-earth-simulation-stage__beacon tt-earth-simulation-stage__beacon--three"><i /></div>
+          <div className="tt-earth-simulation-stage__telemetry tt-earth-simulation-stage__telemetry--one"><span>PLANETARY TARGETS</span><strong>MOON / MARS</strong><small>REFERENCE SELECTION READY</small></div>
+          <div className="tt-earth-simulation-stage__telemetry tt-earth-simulation-stage__telemetry--two"><span>ANALOG WORKFLOW</span><strong>EARTH ↔ SPACE</strong><small>ILLUSTRATIVE ORBITS · NO LIVE FEED</small></div>
+        </div>
         <div className="landing-hero__orbit landing-hero__orbit--one" aria-hidden="true" />
         <div className="landing-hero__orbit landing-hero__orbit--two" aria-hidden="true" />
         <div className="tt-hero__light-sweep" aria-hidden="true" />
         <div className="tt-hero__signal tt-hero__signal--moon" aria-hidden="true"><i /><span>MOON / REFERENCE</span></div>
         <div className="tt-hero__signal tt-hero__signal--earth" aria-hidden="true"><i /><span>EARTH / FIELD LAB</span></div>
-        <div className="tt-hero__floating-ui" aria-hidden="true"><span className="tt-overline"><span className="tt-signal-dot" /> VISUAL LINK / PROTOTYPE</span><b>EARTH ↔ SPACE</b><small>CHOOSE · DISCOVER · COMPARE</small><div><i /><i /><i /><i /><i /><i /><i /><i /><i /></div></div>
+        <div className="tt-hero__floating-ui" aria-hidden="true"><span className="tt-overline"><span className="tt-signal-dot" /> VISUAL SIMULATION / NOT LIVE DATA</span><b>EARTH ↔ SPACE</b><small>CHOOSE · DISCOVER · COMPARE</small><div><i /><i /><i /><i /><i /><i /><i /><i /><i /></div></div>
         <motion.div className="landing-hero__content" inert={departing} aria-hidden={departing} animate={departing && !reduceMotion ? { opacity: 0, y: -8 } : { opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: cinematicEase }}>
           <motion.div className="landing-hero__serial" {...reveal(0.1)}><SciVerseGlyph compact /><span>EARTH × MOON × MARS / EXPLORATION</span><i aria-hidden="true" /></motion.div>
           <motion.p className="landing-hero__eyebrow" {...reveal(0.22)}><span className="tt-signal-dot" /> YOUR JOURNEY THROUGH THE SOLAR SYSTEM</motion.p>

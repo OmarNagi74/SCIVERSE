@@ -109,7 +109,7 @@ export default function LandingStory({ reduceMotion, onChooseTarget }: LandingSt
             <motion.p {...chapterReveal(reduceMotion, 0.1)}>Discover potential analog environments on Earth. Filter by terrain, geology, environment, and the needs of a real exploration mission.</motion.p>
             <motion.div {...chapterReveal(reduceMotion, 0.2)} className="tt-story-chapter__actions">
               <Link className="tt-story-chapter__primary" to={discoveryRoute}>OPEN EARTH DISCOVERY <ArrowUpRight size={17} /></Link>
-              <span>DATASET CANDIDATES</span>
+              <span>DEMONSTRATION CANDIDATES</span>
             </motion.div>
           </div>
           <motion.div {...chapterReveal(reduceMotion, 0.12)} className="tt-story-chapter__visual"><DiscoveryVisual /></motion.div>
