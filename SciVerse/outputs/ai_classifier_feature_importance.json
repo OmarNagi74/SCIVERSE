@@ -1,0 +1,40 @@
+{
+ "mars": {
+  "t_mean_c": 0.041,
+  "t_max_c": 0.051,
+  "t_min_c": 0.026,
+  "t_diurnal_range_c": 0.037,
+  "t_seasonal_range_c": 0.103,
+  "precip_mm_year": 0.234,
+  "pressure_kpa": 0.077,
+  "relief_m": 0.103,
+  "slope_deg": 0.012,
+  "albedo": 0.112,
+  "geo_volcanic": 0.155,
+  "geo_sedimentary": 0.0,
+  "geo_unconsolidated": 0.0,
+  "geo_crystalline": 0.001,
+  "geo_ice": 0.002,
+  "geo_young": 0.045,
+  "geo_missing": 0.0
+ },
+ "moon": {
+  "t_mean_c": 0.057,
+  "t_max_c": 0.048,
+  "t_min_c": 0.047,
+  "t_diurnal_range_c": 0.092,
+  "t_seasonal_range_c": 0.098,
+  "precip_mm_year": 0.072,
+  "pressure_kpa": 0.158,
+  "relief_m": 0.143,
+  "slope_deg": 0.093,
+  "albedo": 0.026,
+  "geo_volcanic": 0.058,
+  "geo_sedimentary": 0.021,
+  "geo_unconsolidated": 0.0,
+  "geo_crystalline": 0.0,
+  "geo_ice": 0.0,
+  "geo_young": 0.082,
+  "geo_missing": 0.004
+ }
+}

@@ -116,3 +116,15 @@ client/public/__manus__/version.json
 assets/source/*.JP2
 assets/source/*.IMG
 **/__pycache__/
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+dist/
+.sciverse-backups/

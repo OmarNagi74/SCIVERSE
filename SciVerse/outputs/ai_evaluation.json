@@ -1,0 +1,148 @@
+{
+ "mars": {
+  "n_analogs": 59,
+  "n_controls": 26,
+  "methods": {
+   "similarity_mean": {
+    "auc_vs_controls": 0.913,
+    "auc_vs_earth_grid": 0.672,
+    "heldout_analog_mean_percentile": 66.295,
+    "heldout_analogs_in_top_quarter": 0.492,
+    "heldout_control_mean_percentile": 16.786
+   },
+   "similarity_best3": {
+    "auc_vs_controls": 0.925,
+    "auc_vs_earth_grid": 0.671,
+    "heldout_analog_mean_percentile": 66.357,
+    "heldout_analogs_in_top_quarter": 0.475,
+    "heldout_control_mean_percentile": 16.283
+   },
+   "similarity_best3_no_terrain": {
+    "auc_vs_controls": 0.934,
+    "auc_vs_earth_grid": 0.676,
+    "heldout_analog_mean_percentile": 66.823,
+    "heldout_analogs_in_top_quarter": 0.492,
+    "heldout_control_mean_percentile": 14.803
+   },
+   "classifier_logistic": {
+    "auc_vs_controls": 0.904,
+    "auc_vs_earth_grid": 0.796,
+    "heldout_analog_mean_percentile": 77.036,
+    "heldout_analogs_in_top_quarter": 0.654,
+    "heldout_control_mean_percentile": 29.543
+   },
+   "classifier_boosting_no_geology": {
+    "auc_vs_controls": 0.934,
+    "auc_vs_earth_grid": 0.807,
+    "heldout_analog_mean_percentile": 77.23,
+    "heldout_analogs_in_top_quarter": 0.643,
+    "heldout_control_mean_percentile": 28.739
+   },
+   "classifier_boosting": {
+    "auc_vs_controls": 0.951,
+    "auc_vs_earth_grid": 0.853,
+    "heldout_analog_mean_percentile": 81.13,
+    "heldout_analogs_in_top_quarter": 0.736,
+    "heldout_control_mean_percentile": 30.38
+   },
+   "combined": {
+    "auc_vs_controls": 0.955,
+    "auc_vs_earth_grid": 0.798,
+    "heldout_analog_mean_percentile": 77.075,
+    "heldout_analogs_in_top_quarter": 0.603,
+    "heldout_control_mean_percentile": 20.071
+   }
+  }
+ },
+ "moon": {
+  "n_analogs": 34,
+  "n_controls": 26,
+  "methods": {
+   "similarity_mean": {
+    "auc_vs_controls": 0.92,
+    "auc_vs_earth_grid": 0.611,
+    "heldout_analog_mean_percentile": 60.045,
+    "heldout_analogs_in_top_quarter": 0.291,
+    "heldout_control_mean_percentile": 17.443
+   },
+   "similarity_best3": {
+    "auc_vs_controls": 0.934,
+    "auc_vs_earth_grid": 0.619,
+    "heldout_analog_mean_percentile": 60.734,
+    "heldout_analogs_in_top_quarter": 0.321,
+    "heldout_control_mean_percentile": 16.333
+   },
+   "similarity_best3_no_terrain": {
+    "auc_vs_controls": 0.915,
+    "auc_vs_earth_grid": 0.578,
+    "heldout_analog_mean_percentile": 56.798,
+    "heldout_analogs_in_top_quarter": 0.262,
+    "heldout_control_mean_percentile": 15.121
+   },
+   "classifier_logistic": {
+    "auc_vs_controls": 0.87,
+    "auc_vs_earth_grid": 0.765,
+    "heldout_analog_mean_percentile": 74.301,
+    "heldout_analogs_in_top_quarter": 0.644,
+    "heldout_control_mean_percentile": 27.872
+   },
+   "classifier_boosting_no_geology": {
+    "auc_vs_controls": 0.881,
+    "auc_vs_earth_grid": 0.772,
+    "heldout_analog_mean_percentile": 74.763,
+    "heldout_analogs_in_top_quarter": 0.67,
+    "heldout_control_mean_percentile": 29.628
+   },
+   "classifier_boosting": {
+    "auc_vs_controls": 0.876,
+    "auc_vs_earth_grid": 0.8,
+    "heldout_analog_mean_percentile": 77.439,
+    "heldout_analogs_in_top_quarter": 0.741,
+    "heldout_control_mean_percentile": 29.842
+   },
+   "combined": {
+    "auc_vs_controls": 0.92,
+    "auc_vs_earth_grid": 0.76,
+    "heldout_analog_mean_percentile": 73.644,
+    "heldout_analogs_in_top_quarter": 0.569,
+    "heldout_control_mean_percentile": 20.117
+   }
+  }
+ },
+ "spatial_blocks": {
+  "mars": {
+   "similarity_best3": {
+    "auc_vs_controls": 0.923,
+    "auc_vs_earth_grid": 0.671,
+    "heldout_analogs_in_top_quarter": 0.47
+   },
+   "classifier_boosting": {
+    "auc_vs_controls": 0.937,
+    "auc_vs_earth_grid": 0.842,
+    "heldout_analogs_in_top_quarter": 0.73
+   },
+   "combined": {
+    "auc_vs_controls": 0.95,
+    "auc_vs_earth_grid": 0.785,
+    "heldout_analogs_in_top_quarter": 0.58
+   }
+  },
+  "moon": {
+   "similarity_best3": {
+    "auc_vs_controls": 0.936,
+    "auc_vs_earth_grid": 0.622,
+    "heldout_analogs_in_top_quarter": 0.32
+   },
+   "classifier_boosting": {
+    "auc_vs_controls": 0.854,
+    "auc_vs_earth_grid": 0.736,
+    "heldout_analogs_in_top_quarter": 0.56
+   },
+   "combined": {
+    "auc_vs_controls": 0.918,
+    "auc_vs_earth_grid": 0.717,
+    "heldout_analogs_in_top_quarter": 0.53
+   }
+  }
+ }
+}

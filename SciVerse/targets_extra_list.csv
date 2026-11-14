@@ -1,0 +1,18 @@
+target_id,body,name,lat,lon_east,site_status
+mars_melas_chasma,mars,Melas Chasma (Valles Marineris),-10.4,287.5,rugged canyon floor and walls
+mars_mawrth,mars,Mawrth Vallis,22.3,343.5,clay-rich outflow channel
+mars_nili_fossae,mars,Nili Fossae,22.0,77.0,fractured terrain with carbonates
+mars_meridiani,mars,Meridiani Planum (Opportunity),-1.95,354.47,lander site
+mars_gusev,mars,Gusev Crater (Spirit),-14.57,175.47,lander site
+mars_oxia,mars,Oxia Planum (ExoMars rover site),18.2,335.5,planned lander site
+mars_zhurong,mars,Utopia Planitia (Zhurong),25.07,109.93,lander site
+mars_pathfinder,mars,Ares Vallis (Pathfinder),19.13,326.78,lander site
+mars_hellas,mars,Hellas Planitia floor,-42.0,70.0,lowest and highest-pressure region
+mars_arsia,mars,Arsia Mons,-8.4,239.9,high volcano with cave skylights
+mars_olympus,mars,Olympus Mons summit,18.65,226.2,highest and lowest-pressure point
+mars_deuteronilus,mars,Deuteronilus Mensae,43.9,23.5,debris-covered glaciers
+mars_noctis,mars,Noctis Labyrinthus,-7.0,258.0,rugged maze of canyons
+moon_mons_mouton,moon,Mons Mouton,-84.6,31.0,on NASA's 2024 list of nine Artemis III regions
+moon_cabeus,moon,Cabeus crater (LCROSS impact),-84.9,324.5,permanently shadowed crater with detected water
+moon_shoemaker,moon,Shoemaker crater,-88.1,44.9,permanently shadowed crater
+moon_faustini,moon,Faustini crater,-87.3,77.0,permanently shadowed crater
