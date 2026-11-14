@@ -24,3 +24,10 @@ test('local assistant and guardrail rejection work',async()=>{
  let r=await request('/api/v1/agent/query',{text:'Find Mars rover analog sites in Egypt for Jezero'});assert.equal(r.status,200);assert.ok((await r.json()).picks.length);
  r=await request('/api/v1/agent/query',{text:'سسسس'});assert.equal(r.status,400);
 });
+test('target selection changes the ranked map shortlist',async()=>{
+ const search=async targetId=>{const r=await request('/api/v1/discovery/search',{targetId,objective:'general',limit:12});assert.equal(r.status,200);return (await r.json()).data;};
+ const mars=await search('mars_jezero'),moon=await search('moon_connecting_ridge');
+ assert.equal(mars.length,12);assert.equal(moon.length,12);
+ assert.notDeepEqual(mars.map(x=>x.earth_id),moon.map(x=>x.earth_id));
+ assert.notDeepEqual(mars.map(x=>[x.earth_id,x.score_pct]),moon.map(x=>[x.earth_id,x.score_pct]));
+});

@@ -18,7 +18,8 @@ function Evidence({ value }: { value: unknown }) {
 }
 export default function LiveResearchPage({ mode }: { mode: "discovery" | "comparison" | "profile" }) {
   const context = useExplorer();
-  const [params] = useSearchParams();
+  const [params, setParams] = useSearchParams();
+  const requestedTarget = params.get("referenceId");
   const { siteId } = useParams();
   const [target, setTarget] = useState(params.get("referenceId") || context.reference?.id || features[0]?.id || "");
   const [objective, setObjective] = useState(params.get("objective") || "general");
@@ -35,6 +36,7 @@ export default function LiveResearchPage({ mode }: { mode: "discovery" | "compar
   const queryIds = [params.get("candidateId"), ...params.getAll("candidateIds")].filter((id): id is string => Boolean(id));
   const ids = [...new Set(queryIds.length ? queryIds : context.comparisonCandidates.length ? context.comparisonCandidates.map(c => c.id) : context.candidate ? [context.candidate.id] : [])];
   const idKey = ids.join(",");
+  useEffect(() => { if (requestedTarget) setTarget(requestedTarget); }, [requestedTarget]);
   useEffect(() => {
     const abort = new AbortController();
     setMetaError(""); setMeta(null);
@@ -49,7 +51,7 @@ export default function LiveResearchPage({ mode }: { mode: "discovery" | "compar
     async function fetchResults() {
       try {
         if (mode === "discovery") {
-          const result = await apiRequest<Envelope<SearchRow[]>>("/discovery/search", { targetId: target, objective, region: region || null, limit: 100 }, abort.signal);
+          const result = await apiRequest<Envelope<SearchRow[]>>("/discovery/search", { targetId: target, objective, region: region || null, limit: 12 }, abort.signal);
           if (!abort.signal.aborted) { setRows(result.data); setLimitations(result.limitations); }
         } else if (mode === "comparison") {
           const result = await apiRequest<Envelope<Detail[]>>("/comparisons", { targetId: target, objective, candidateIds: idKey.split(",") }, abort.signal);
@@ -64,14 +66,14 @@ export default function LiveResearchPage({ mode }: { mode: "discovery" | "compar
     void fetchResults();
     return () => abort.abort();
   }, [target, objective, region, mode, siteId, idKey, attempt]);
-  function chooseTarget(id: string) { setTarget(id); context.setReferenceById(id); }
+  function chooseTarget(id: string) { setTarget(id); context.setReferenceById(id); setParams(current => { const next = new URLSearchParams(current); next.set("referenceId", id); return next; }); }
   return <main className="live-research"><AppHeader active="earth" /><header><p className="eyebrow">SCIVERSE / BACKEND DATA</p><h1>{mode === "discovery" ? "Earth analog discovery" : mode === "comparison" ? "Compare research candidates" : getCandidate(siteId || "")?.title || "Site evidence"}</h1><p>Results are calculated by the backend for the selected reference and mission purpose.</p></header>
     <section className="live-controls"><label>Planetary reference<select value={target} onChange={e => chooseTarget(e.target.value)}>{features.map(f => <option key={f.id} value={f.id}>{f.body.toUpperCase()} — {f.title}</option>)}</select></label><label>Mission purpose<select value={objective} disabled={!meta} onChange={e => setObjective(e.target.value)}>{Object.keys(meta?.objectives || { general: null }).map(key => <option key={key} value={key}>{key.replaceAll("_", " ")}</option>)}</select></label>{mode === "discovery" && <label>Region<select value={region} disabled={!meta} onChange={e => setRegion(e.target.value)}><option value="">All supported regions</option>{Object.keys(meta?.regions || {}).map(key => <option key={key} value={key}>{key}</option>)}</select></label>}<button onClick={() => setAttempt(n => n + 1)}>Refresh</button><Link to={`/compare?referenceId=${encodeURIComponent(target)}&objective=${encodeURIComponent(objective)}`}>Compare selected ({context.comparisonCandidates.length})</Link></section>
     {metaError && <p role="alert">Could not load mission options: {metaError}</p>}
     {busy && <p role="status">Loading backend results…</p>}{error && <p role="alert">{error} <button onClick={() => setAttempt(n => n + 1)}>Retry</button></p>}
     {!busy && !error && mode === "comparison" && !ids.length && <p>Select candidates in <Link to="/discovery">Discovery</Link> to compare them.</p>}
     {!busy && !error && mode === "discovery" && !rows.length && <p>No candidates returned for this query.</p>}
-    {mode === "discovery" && !busy && !error && rows.length > 0 && <><div className="live-map"><Suspense fallback={<p>Loading map…</p>}><EarthMap selectedCandidateId={active} onSelectCandidate={id => { setActive(id); context.setActiveCandidateById(id); }} cameraAction={context.cameraAction} showCandidates visualLayerEnabled visibleCandidateIds={rows.map(row => row.earth_id)} /></Suspense></div><section className="live-cards">{rows.map(row => <article key={row.earth_id} className={active === row.earth_id ? "is-active" : ""}><h2>{row.rank}. {row.name}</h2>{typeof row.score_pct === "number" && <p>Score: {row.score_pct.toFixed(1)} / 100 · {row.scoreScale}</p>}<p>{row.details.coordinate.latitude}, {row.details.coordinate.longitude}</p><button onClick={() => { setActive(row.earth_id); context.setActiveCandidateById(row.earth_id); }}>Locate</button><button disabled={context.comparisonCandidates.length >= 20 && !context.comparisonCandidates.some(c => c.id === row.earth_id)} onClick={() => context.comparisonCandidates.some(c => c.id === row.earth_id) ? context.removeCandidateById(row.earth_id) : context.addCandidateById(row.earth_id)}>{context.comparisonCandidates.some(c => c.id === row.earth_id) ? "Remove from comparison" : "Add to comparison"}</button><Link to={`/sites/${encodeURIComponent(row.earth_id)}?referenceId=${encodeURIComponent(target)}&objective=${encodeURIComponent(objective)}`}>Inspect evidence</Link></article>)}</section></>}
+    {mode === "discovery" && !busy && !error && rows.length > 0 && <><p role="status" data-testid="discovery-results-summary">Top {rows.length} Earth candidates for <strong>{features.find(f => f.id === target)?.title || target}</strong> · {objective.replaceAll("_", " ")}. The map shows this shortlist; sites can recur across targets with different ranks and scores.</p><div className="live-map"><Suspense fallback={<p>Loading map…</p>}><EarthMap selectedCandidateId={active} onSelectCandidate={id => { setActive(id); context.setActiveCandidateById(id); }} cameraAction={context.cameraAction} showCandidates visualLayerEnabled visibleCandidateIds={rows.map(row => row.earth_id)} /></Suspense></div><section className="live-cards">{rows.map(row => <article key={row.earth_id} className={active === row.earth_id ? "is-active" : ""}><h2>{row.rank}. {row.name}</h2>{typeof row.score_pct === "number" && <p>Score: {row.score_pct.toFixed(1)} / 100 · {row.scoreScale}</p>}<p>{row.details.coordinate.latitude}, {row.details.coordinate.longitude}</p><button onClick={() => { setActive(row.earth_id); context.setActiveCandidateById(row.earth_id); }}>Locate</button><button disabled={context.comparisonCandidates.length >= 20 && !context.comparisonCandidates.some(c => c.id === row.earth_id)} onClick={() => context.comparisonCandidates.some(c => c.id === row.earth_id) ? context.removeCandidateById(row.earth_id) : context.addCandidateById(row.earth_id)}>{context.comparisonCandidates.some(c => c.id === row.earth_id) ? "Remove from comparison" : "Add to comparison"}</button><Link to={`/sites/${encodeURIComponent(row.earth_id)}?referenceId=${encodeURIComponent(target)}&objective=${encodeURIComponent(objective)}`}>Inspect evidence</Link></article>)}</section></>}
     {details.length > 0 && <section className="live-cards">{details.map(detail => <article key={detail.id}><h2>{getCandidate(detail.id)?.title || detail.id}</h2><p>{detail.coordinate.latitude}, {detail.coordinate.longitude} · {detail.classification}</p><h3>Target-specific comparison</h3><Evidence value={detail.facts} /><h3>Evidence audit</h3><Evidence value={detail.audit} /><details><summary>Dataset measurements and source fields</summary><Evidence value={detail.rawFeatures} /></details><p>Uncertainty: {detail.uncertaintyStatus}; no calibrated confidence interval supplied.</p></article>)}</section>}
     {!!limitations.length && <section className="live-limitations"><h2>Evidence limitations</h2><ul>{limitations.map(item => <li key={item}>{item}</li>)}</ul></section>}
   </main>;
