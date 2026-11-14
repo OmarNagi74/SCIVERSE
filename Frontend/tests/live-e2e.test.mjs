@@ -31,3 +31,10 @@ test('target selection changes the ranked map shortlist',async()=>{
  assert.notDeepEqual(mars.map(x=>x.earth_id),moon.map(x=>x.earth_id));
  assert.notDeepEqual(mars.map(x=>[x.earth_id,x.score_pct]),moon.map(x=>[x.earth_id,x.score_pct]));
 });
+test('running discovery component uses the target-specific shortlist',async()=>{
+ const route=await request('/src/pages/DiscoveryPage.tsx');assert.equal(route.status,200);
+ const source=await route.text();const match=source.match(/import LiveResearchPage from "([^"]+)"/);
+ assert.ok(match,'Vite discovery route must import LiveResearchPage');
+ const component=await request(match[1]);assert.equal(component.status,200);
+ const code=await component.text();assert.match(code,/limit:\s*12/);assert.match(code,/discovery-results-summary/);
+});
