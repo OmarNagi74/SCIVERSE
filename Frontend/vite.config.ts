@@ -21,7 +21,10 @@ export default defineConfig(({ mode }) => {
     root: path.resolve(import.meta.dirname, "client"),
     publicDir: path.resolve(import.meta.dirname, "client", "public"),
     build: {
-      outDir: path.resolve(import.meta.dirname, "dist/public"),
+      // Relative to client/: vite-plugin-cesium joins root and outDir when
+      // copying its runtime. An absolute outDir makes it copy outside the
+      // directory Vite publishes, so SPA hosts serve index.html for Cesium.js.
+      outDir: "../dist/public",
       emptyOutDir: true,
     },
     server: {

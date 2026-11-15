@@ -4,6 +4,7 @@ import type { CameraAction } from "@/domain/terratwin";
 import { clampEarthCameraDistance } from "@/features/explorer/renderingPolicy";
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import { useEffect, useRef, useState } from "react";
+import * as Cesium from "cesium";
 
 type EarthCesiumViewerProps = {
   selectedCandidateId: string | null;
@@ -110,7 +111,8 @@ export default function EarthCesiumViewer({
 
     async function createViewer() {
       try {
-        const Cesium = await import("cesium");
+        // The production Cesium plugin maps static imports to its runtime
+        // global; a dynamic import produces a self-referencing local binding.
         if (disposed || !containerRef.current) return;
         CesiumRef.current = Cesium;
         setFailed(false);
