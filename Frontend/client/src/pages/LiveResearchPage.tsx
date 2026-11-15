@@ -32,7 +32,9 @@ export default function LiveResearchPage({ mode }: { mode: "discovery" | "compar
   const [active, setActive] = useState<string | null>(null);
   const queryIds = [params.get("candidateId"), ...params.getAll("candidateIds")].filter((id): id is string => Boolean(id));
   const ids = [...new Set(queryIds.length ? queryIds : context.comparisonCandidates.length ? context.comparisonCandidates.map(c => c.id) : context.candidate ? [context.candidate.id] : [])];
-  const idKey = ids.join(",");
+  // Candidate selection affects comparison requests only. In discovery it must
+  // leave the current results and mounted globe intact when Locate is clicked.
+  const idKey = mode === "comparison" ? ids.join(",") : "";
   useEffect(() => { if (requestedTarget) setTarget(requestedTarget); }, [requestedTarget]);
   useEffect(() => {
     const abort = new AbortController();
