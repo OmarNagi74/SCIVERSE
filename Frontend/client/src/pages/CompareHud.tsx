@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { features, getCandidate } from "@/data/catalog";
 import "./compare-hud.css";
+import { trekLayout } from "./trekTiles";
 
 type Feat = { feature: string; label?: string; unit?: string; earth?: number | null; target?: number | null; gap_in_earth_std?: number | null };
 type Facts = {
@@ -18,10 +19,6 @@ export type HudDetail = { id: string; classification: string; coordinate: { lati
 
 const THEMES = ["thermal", "dryness", "pressure", "terrain", "surface"];
 const KM_PER_DEG: Record<string, number> = { earth: 111.32, mars: 59.27, moon: 30.32 };
-/** Both views span the same angular width so the two surfaces are shown at a comparable extent. */
-const TILE_Z = 6;
-const TILE_DEG = 180 / 2 ** TILE_Z;
-const TARGET_WIDTH_DEG = TILE_DEG / 0.6; // one tile is 60% of the frame width
 const EARTH_HALF_W = 2.4;
 
 function fmt(v: number | null | undefined, digits = 2) {
@@ -41,22 +38,11 @@ function text(v: unknown): string {
 }
 function normLon(lon: number) { return ((((lon + 180) % 360) + 360) % 360) - 180; }
 
-/** 3×3 NASA Trek tiles (geographic tiling) centred on the reference coordinate. */
+/** Use polar stereographic imagery near lunar poles to avoid geographic stretching. */
 function TrekTiles({ body, lat, lon }: { body: string; lat: number; lon: number }) {
-  const x = (normLon(lon) + 180) / TILE_DEG;
-  const y = (90 - lat) / TILE_DEG;
-  const col = Math.floor(x), row = Math.floor(y);
-  const base = body === "moon"
-    ? "https://trek.nasa.gov/tiles/Moon/EQ/LRO_WAC_Mosaic_Global_303ppd_v02/1.0.0/default/default028mm"
-    : "https://trek.nasa.gov/tiles/Mars/EQ/Mars_Viking_MDIM21_ClrMosaic_global_232m/1.0.0/default/default028mm";
-  const cols = 2 ** (TILE_Z + 1), rows = 2 ** TILE_Z;
-  const tiles: { key: string; src: string | null }[] = [];
-  for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
-    const r = row + dy, c = (((col + dx) % cols) + cols) % cols;
-    tiles.push({ key: `${dy}:${dx}`, src: r < 0 || r >= rows ? null : `${base}/${TILE_Z}/${r}/${c}.jpg` });
-  }
-  return <div className="hud-tiles" style={{ ["--fx" as string]: x - col, ["--fy" as string]: y - row }}>
-    {tiles.map(t => t.src ? <img key={t.key} src={t.src} alt="" onError={e => { e.currentTarget.style.visibility = "hidden"; }} /> : <span key={t.key} />)}
+  const { tiles, fx, fy } = trekLayout(body, lat, lon);
+  return <div className="hud-tiles" style={{ ["--fx" as string]: fx, ["--fy" as string]: fy }}>
+    {tiles.map(t => t.src ? <img key={t.src} src={t.src} alt="" onError={e => { e.currentTarget.style.visibility = "hidden"; }} /> : <span key={t.key} />)}
   </div>;
 }
 
@@ -153,9 +139,9 @@ function HudCard({ detail, targetId }: { detail: HudDetail; targetId: string }) 
         <div className="hud-view" style={{ backgroundImage: `url(${fallback})` }}>
           {hasT && <TrekTiles body={body} lat={tLat as number} lon={tLon as number} />}
           <Marker /><Readout rows={closest.slice(0, 3)} side="target" />
-          {hasT && <ScaleBar widthKm={TARGET_WIDTH_DEG * KM_PER_DEG[body] * Math.cos(((tLat as number) * Math.PI) / 180)} />}
+          {hasT && <ScaleBar widthKm={trekLayout(body, tLat as number, tLon as number).widthKm} />}
         </div>
-        <figcaption>{body === "moon" ? "LRO WAC global mosaic" : "Viking MDIM 2.1 colour mosaic"}, NASA Trek. Visual context only.</figcaption>
+        <figcaption>{body === "moon" ? hasT && Math.abs(tLat as number) >= 60 ? "LRO WAC polar mosaic · polar stereographic" : "LRO WAC global mosaic" : "Viking MDIM 2.1 colour mosaic"}, NASA Trek. Visual context only.</figcaption>
       </figure>
       <figure className="hud-side hud-earth">
         <header><span className="hud-kicker">Earth candidate</span><h2>{earthName}</h2><p>{coord(eLat, eLon)} · {detail.classification}</p></header>
