@@ -25,6 +25,8 @@ SciVerse helps researchers, students, and mission-planning teams investigate tha
 
 An Earth analog can reproduce selected aspects of an environment. SciVerse makes those similarities useful while keeping differences, missing measurements, and evidence limitations visible.
 
+## demo link : https://sciverse.up.railway.app
+
 ## The experience
 
 | Explore | Discover | Compare | Ask |
