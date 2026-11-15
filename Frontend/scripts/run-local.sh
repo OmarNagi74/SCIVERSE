@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+export PORT="${BACKEND_PORT:-8000}"
 bash scripts/run-backend.sh &
 backend_pid=$!
 trap 'kill "$backend_pid" 2>/dev/null || true' EXIT INT TERM

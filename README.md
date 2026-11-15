@@ -52,19 +52,18 @@ The interface includes question suggestions, a conversation display, selected-re
 
 ```text
 SCIVERSE/
-├── Frontend/               React + TypeScript + Vite interface
+├── Frontend/               React + TypeScript + Vite; Vercel root
 │   ├── client/             Pages, planetary views, and Ask SciVerse
-│   └── scripts/            Frontend development helpers
-├── backend/                FastAPI application
-│   ├── terratwin/          API routes and response contracts
-│   ├── ai_service/         Research runtime, OpenRouter, and guardrails
-│   │   └── vendor/         Bundled model, agent, and feature datasets
-│   └── tests/              API and guardrail checks
-└── SciVerse/               Original scientific pipeline
-    ├── data/               Earth and planetary feature tables
-    ├── training/           Training inputs and learned weights
-    └── outputs/            Saved scores, rankings, and evaluations
+│   └── scripts/            Development and asset preparation helpers
+└── backend/                FastAPI; Docker build context
+    ├── terratwin/          API routes and response contracts
+    ├── ai_service/         Research runtime, OpenRouter, and guardrails
+    │   └── vendor/         Serving model, agent, and feature datasets
+    ├── tests/              API and guardrail checks
+    └── research/           Original offline pipeline and saved evaluations
 ```
+
+See [deployment instructions](DEPLOYMENT.md) for Vercel and blitz.cloud.
 
 Some source modules retain the earlier **TerraTwin** name. The user-facing project is **SciVerse**.
 
@@ -88,7 +87,8 @@ cd backend
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-python -m uvicorn terratwin.main:app --host 127.0.0.1 --port 8001
+cp .env.example .env
+bash run.sh
 ```
 
 On Windows PowerShell, activate with `.venv\Scripts\Activate.ps1` instead.
@@ -99,23 +99,24 @@ In a second terminal, from the repository root:
 
 ```bash
 cd Frontend
-npm install
-VITE_API_BASE_URL="" BACKEND_URL=http://127.0.0.1:8001 npm run dev:frontend
+npm ci
+cp .env.example .env
+npm run dev
 ```
 
 For Windows PowerShell, set the variables separately:
 
 ```powershell
 $env:VITE_API_BASE_URL = ""
-$env:BACKEND_URL = "http://127.0.0.1:8001"
+$env:BACKEND_URL = "http://127.0.0.1:8000"
 npm run dev:frontend
 ```
 
 | Service | Local address |
 | :--- | :--- |
 | Web interface | [localhost:3000](http://localhost:3000) |
-| Interactive API documentation | [127.0.0.1:8001/docs](http://127.0.0.1:8001/docs) |
-| Assistant health | [127.0.0.1:8001/api/v1/agent/health](http://127.0.0.1:8001/api/v1/agent/health) |
+| Interactive API documentation | [127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) |
+| Assistant health | [127.0.0.1:8000/api/v1/agent/health](http://127.0.0.1:8000/api/v1/agent/health) |
 
 These instructions start each service directly and work with the sibling `Frontend/` and `backend/` layout.
 
@@ -127,10 +128,10 @@ In the backend terminal, export your own credentials before starting Uvicorn:
 ```bash
 export OPENROUTER_API_KEY="YOUR_OPENROUTER_API_KEY"
 export OPENROUTER_MODEL="YOUR_EXACT_MODEL_ID"
-python -m uvicorn terratwin.main:app --host 127.0.0.1 --port 8001
+python -m uvicorn terratwin.main:app --host 127.0.0.1 --port 8000
 ```
 
-Keep credentials on the server and outside Git. The direct Uvicorn command does not automatically load a `.env` file. Provider availability, model access, and credits depend on your OpenRouter account.
+Keep credentials on the server and outside Git. The backend loads `backend/.env`; hosting environment variables take precedence. Provider availability, model access, and credits depend on your OpenRouter account.
 
 AI research sends the question, included reference context, and tool data to OpenRouter and its selected model provider. Local search works without these credentials.
 
@@ -174,12 +175,12 @@ All paths below are relative to the backend origin.
 Try a local question:
 
 ```bash
-curl http://127.0.0.1:8001/api/v1/agent/query \
+curl http://127.0.0.1:8000/api/v1/agent/query \
   -H 'Content-Type: application/json' \
   -d '{"text":"Find Earth analog sites in Egypt for Mars rover testing at Jezero."}'
 ```
 
-Use the generated [Swagger documentation](http://127.0.0.1:8001/docs) for request schemas and the complete route list.
+Use the generated [Swagger documentation](http://127.0.0.1:8000/docs) for request schemas and the complete route list.
 
 ## Science & limitations
 
@@ -192,7 +193,7 @@ Use the generated [Swagger documentation](http://127.0.0.1:8001/docs) for reques
 - Ice resources, biosignatures, subsurface conditions, and operational suitability are not established by a high rank.
 - Local confidence labels are heuristic and uncalibrated. Similarity, classifier output, and evidence quality represent different concepts.
 
-See the [scientific source notes](SciVerse/SOURCES.md) and [saved evaluation](SciVerse/outputs/ai_evaluation.json) for additional context. Recorded metrics describe the bundled evaluation, not independently validated mission performance.
+See the [scientific source notes](backend/research/SOURCES.md) and [saved evaluation](backend/research/outputs/ai_evaluation.json) for additional context. Recorded metrics describe the bundled evaluation, not independently validated mission performance.
 
 ## Development checks
 

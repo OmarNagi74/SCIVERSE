@@ -12,7 +12,7 @@ def chat(messages):
         raise HTTPException(503, 'Configure OPENROUTER_API_KEY and OPENROUTER_MODEL locally')
     try:
         with httpx.Client(timeout=45, trust_env=False) as client:
-            r = client.post('https://openrouter.ai/api/v1/chat/completions',
+            r = client.post(os.getenv('OPENROUTER_BASE_URL', 'https://openrouter.ai/api/v1').rstrip('/') + '/chat/completions',
                 headers={'Authorization': 'Bearer ' + os.environ['OPENROUTER_API_KEY']},
                 json={'model': os.environ['OPENROUTER_MODEL'], 'messages': redact(messages),
                       'temperature': 0, 'max_tokens': 1500})

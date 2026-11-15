@@ -21,7 +21,7 @@ class AIQuery(BaseModel):
 
 class AIStore:
     def __init__(self, directory=None):
-        self.directory = Path(directory or os.environ.get('TERRATWIN_AI_OUTPUTS_DIR', 'nasa_ai/SciVerse/outputs')).resolve()
+        self.directory = Path(directory or os.environ.get('TERRATWIN_AI_OUTPUTS_DIR', str(Path(__file__).resolve().parents[1] / 'research' / 'outputs'))).resolve()
         self.snapshot = None
         self.lock = Lock()
 
